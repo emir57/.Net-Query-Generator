@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace DapperTest.Entities
 {
-    public class Driver
+    public class Country
     {
         public int Id { get; set; }
-        public string DriverName { get; set; }
-        public string DriverSurname { get; set; }
-        public byte DriverNumber { get; set; }
+        public string CountryName { get; set; }
+        public string CountryImageUrl { get; set; }
     }
 }
