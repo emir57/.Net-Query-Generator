@@ -6,7 +6,9 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
 {
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
-    conn.Execute(
-        "insert into drivers(drivername,driversurname,drivernumber)values(@driverName,@driverSurname,@driverNumber)",
-        new Driver() { DriverName = "Emir", DriverSurname = "Gürbüz", DriverNumber = 57 });
+    int row = conn.Execute(
+        "insert into countries(countryName,countryImageUrl)values(@countryName,@countryImageUrl)",
+        new Country() { CountryName = "Türkiye", CountryImageUrl = "turkey.jpg" });
+    Console.WriteLine(row);
+    await conn.CloseAsync();
 }
