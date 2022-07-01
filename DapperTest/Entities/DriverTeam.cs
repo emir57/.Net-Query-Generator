@@ -9,6 +9,7 @@ namespace DapperTest.Entities
     public class DriverTeam
     {
         public string DriverName { get; set; }
+        public string DriverSurname { get; set; }
         public string TeamName { get; set; }
     }
 }

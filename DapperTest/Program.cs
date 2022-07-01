@@ -19,5 +19,8 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     var getCountry = await conn.QueryFirstOrDefaultAsync<Country>($"select * from countries where CountryId>{5}");
     Console.WriteLine($"{getCountry?.CountryId} {getCountry?.CountryName} {getCountry?.CountryImageUrl}");
     Console.WriteLine("-------");
+    var driverTeams = await conn.QueryAsync<DriverTeam>("select d.DriverName,t.Name as TeamName,d.DriverSurname from drivers d, teams t where d.TeamId = t.TeamId");
+    foreach (var driverTeam in driverTeams)
+        Console.WriteLine($"{driverTeam.DriverName} {driverTeam.DriverSurname} -> {driverTeam.TeamName}");
     await conn.CloseAsync();
 }
