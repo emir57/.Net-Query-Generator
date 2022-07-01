@@ -15,5 +15,9 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     {
         Console.WriteLine($"{country.CountryId} {country.CountryName} {country.CountryImageUrl}");
     }
+    Console.WriteLine("-------");
+    var getCountry = await conn.QueryFirstOrDefaultAsync<Country>($"select * from countries where CountryId>{5}");
+    Console.WriteLine($"{getCountry?.CountryId} {getCountry?.CountryName} {getCountry?.CountryImageUrl}");
+    Console.WriteLine("-------");
     await conn.CloseAsync();
 }
