@@ -7,8 +7,13 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
     int row = conn.Execute(
-        "insert into countries(countryName,countryImageUrl)values(@countryName,@countryImageUrl)",
-        new Country() { CountryName = "Türkiye", CountryImageUrl = "turkey.jpg" });
+        "update countries set countryName=@countryName,countryImageUrl=@countryImageUrl where countryId=@countryId",
+        new Country() { CountryId = 14, CountryName = "Türkiye 2", CountryImageUrl = "turkey.jpg" });
     Console.WriteLine(row);
+    var countries = await conn.QueryAsync<Country>("select * from countries where countryImageUrl like '%g'");
+    foreach (var country in countries)
+    {
+        Console.WriteLine($"{country.CountryId} {country.CountryName} {country.CountryImageUrl}");
+    }
     await conn.CloseAsync();
 }
