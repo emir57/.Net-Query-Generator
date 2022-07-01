@@ -6,7 +6,7 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
 {
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
-    int row = conn.Execute(
+    int row = await conn.ExecuteAsync(
         "update countries set countryName=@countryName,countryImageUrl=@countryImageUrl where countryId=@countryId",
         new Country() { CountryId = 14, CountryName = "Türkiye 2", CountryImageUrl = "turkey.jpg" });
     Console.WriteLine(row);
