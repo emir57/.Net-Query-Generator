@@ -10,15 +10,9 @@ namespace WriteParameter
     public static class Extensions
     {
 
-        public static string InsertIntoWriteParameters<T>(this T entity)
+        public static string GenerateInsertQuery<T>(this T entity)
         {
-            var properties = entity.GetType().GetProperties();
-            string idPropertyName = getIdColumn(properties);
-            string columns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
-            string valueColumns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
-            columns = columns.StartsWith(",") ? columns.Substring(1) : columns;
-            valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
-            return $"({columns}) values ({valueColumns})";
+            return insertIntoWriteParameters(entity);
         }
         public static string GenerateUpdateQuery<T>(this T entity)
         {
@@ -44,6 +38,16 @@ namespace WriteParameter
             updateQuery = updateQuery.StartsWith(",") ? updateQuery.Substring(1) : updateQuery;
             updateQuery += String.Concat(" ", $"where {idPropertyName}=@{idPropertyName}");
             return $"set {updateQuery}";
+        }
+        private static string insertIntoWriteParameters<T>(T entity)
+        {
+            var properties = entity.GetType().GetProperties();
+            string idPropertyName = getIdColumn(properties);
+            string columns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
+            string valueColumns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
+            columns = columns.StartsWith(",") ? columns.Substring(1) : columns;
+            valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
+            return $"({columns}) values ({valueColumns})";
         }
     }
 }
