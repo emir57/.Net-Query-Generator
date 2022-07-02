@@ -20,14 +20,9 @@ namespace WriteParameter
             valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
             return $"({columns}) values ({valueColumns})";
         }
-        public static string UpdateWriteParameters<T>(this T entity)
+        public static string GenerateUpdateQuery<T>(this T entity)
         {
-            var properties = entity.GetType().GetProperties();
-            string idPropertyName = getIdColumn(properties);
-            string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{p.Name}=@{p.Name}"));
-            updateQuery = updateQuery.StartsWith(",") ? updateQuery.Substring(1) : updateQuery;
-            updateQuery += String.Concat(" ", $"where {idPropertyName}=@{idPropertyName}");
-            return $"set {updateQuery}";
+            return updateWriteParameters(entity);
         }
 
         private static string getIdColumn(PropertyInfo[] properties)
@@ -39,6 +34,16 @@ namespace WriteParameter
                 return tryGetContainsId.Name;
             }
             return tryGetId.Name;
+        }
+
+        private static string updateWriteParameters<T>(T entity)
+        {
+            var properties = entity.GetType().GetProperties();
+            string idPropertyName = getIdColumn(properties);
+            string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{p.Name}=@{p.Name}"));
+            updateQuery = updateQuery.StartsWith(",") ? updateQuery.Substring(1) : updateQuery;
+            updateQuery += String.Concat(" ", $"where {idPropertyName}=@{idPropertyName}");
+            return $"set {updateQuery}";
         }
     }
 }
