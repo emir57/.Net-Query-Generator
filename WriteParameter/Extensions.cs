@@ -22,6 +22,10 @@ namespace WriteParameter
         {
             return updateWriteParameters(entity);
         }
+        public static string GenerateUpdateQuery<T>(this T entity, string tableName)
+        {
+            return String.Format($"update {tableName} {updateWriteParameters(entity)}");
+        }
 
         private static string getIdColumn(PropertyInfo[] properties)
         {
