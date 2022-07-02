@@ -13,8 +13,9 @@ namespace WriteParameter
         public static string InsertIntoWriteParameters<T>(this T entity)
         {
             var properties = entity.GetType().GetProperties();
-            string columns = String.Join(",", properties.Select(p => p.Name.ToUpper().Contains("ID") ? "" : p.Name));
-            string valueColumns = String.Join(",", properties.Select(p => p.Name.ToUpper().Contains("ID") ? "" : $"@{p.Name}"));
+            string idPropertyName = getIdColumn(properties);
+            string columns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
+            string valueColumns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
             columns = columns.StartsWith(",") ? columns.Substring(1) : columns;
             valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
             return $"({columns}) values ({valueColumns})";
@@ -22,11 +23,22 @@ namespace WriteParameter
         public static string UpdateWriteParameters<T>(this T entity)
         {
             var properties = entity.GetType().GetProperties();
-            string idPropertyName = properties.FirstOrDefault(p => p.Name.ToUpper().Contains("ID")).Name;
-            string columnsWithValueColumns = String.Join(",", properties.Select(p => p.Name.ToUpper().Contains("ID") ? "" : $"{p.Name}=@{p.Name}"));
-            columnsWithValueColumns = columnsWithValueColumns.StartsWith(",") ? columnsWithValueColumns.Substring(1) : columnsWithValueColumns;
-            columnsWithValueColumns += String.Concat(" ", $"where {idPropertyName}=@{idPropertyName}");
-            return $"set {columnsWithValueColumns}";
+            string idPropertyName = getIdColumn(properties);
+            string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{p.Name}=@{p.Name}"));
+            updateQuery = updateQuery.StartsWith(",") ? updateQuery.Substring(1) : updateQuery;
+            updateQuery += String.Concat(" ", $"where {idPropertyName}=@{idPropertyName}");
+            return $"set {updateQuery}";
+        }
+
+        private static string getIdColumn(PropertyInfo[] properties)
+        {
+            PropertyInfo tryGetId = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
+            if (tryGetId is null)
+            {
+                PropertyInfo tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().Contains("ID"));
+                return tryGetContainsId.Name;
+            }
+            return tryGetId.Name;
         }
     }
 }
