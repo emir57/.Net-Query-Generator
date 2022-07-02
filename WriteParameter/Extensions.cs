@@ -14,6 +14,10 @@ namespace WriteParameter
         {
             return insertIntoWriteParameters(entity);
         }
+        public static string GenerateInsertQuery<T>(this T entity, string tableName)
+        {
+            return String.Format($"insert into {tableName} {insertIntoWriteParameters(entity)}");
+        }
         public static string GenerateUpdateQuery<T>(this T entity)
         {
             return updateWriteParameters(entity);
