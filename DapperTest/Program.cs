@@ -1,14 +1,16 @@
 ﻿using Dapper;
 using DapperTest.Entities;
 using System.Data.SqlClient;
+using WriteParameter;
 
 using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
 {
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
+    var entity = new Country() { CountryId = 14, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
     int row = await conn.ExecuteAsync(
-        "update countries set countryName=@countryName,countryImageUrl=@countryImageUrl where countryId=@countryId",
-        new Country() { CountryId = 14, CountryName = "Türkiye 2", CountryImageUrl = "turkey.jpg" });
+        $"update countries {entity.UpdateWriteParameters()}",
+        entity);
     Console.WriteLine(row);
     var countries = await conn.QueryAsync<Country>("select * from countries where countryImageUrl like '%g'");
     foreach (var country in countries)
