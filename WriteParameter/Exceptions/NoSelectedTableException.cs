@@ -8,7 +8,7 @@ namespace WriteParameter.Exceptions
 {
     public class NoSelectedTableException : Exception
     {
-        public NoSelectedTableException() : this("Seçili tablo yok")
+        public NoSelectedTableException() : this("No selected table")
         {
 
         }
