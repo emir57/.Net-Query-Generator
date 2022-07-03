@@ -12,8 +12,14 @@ namespace WriteParameter.Concrete
     public class QueryGenerate<TEntity> : IQueryGenerate<TEntity>
         where TEntity : class
     {
+        private List<string> _properties;
         private string _query;
         private string _tableName;
+
+        public QueryGenerate()
+        {
+            _properties = new List<string>();
+        }
 
         public string Generate()
         {
@@ -41,6 +47,13 @@ namespace WriteParameter.Concrete
         public IQueryGenerate<TEntity> SetTableName(string tableName)
         {
             _tableName = tableName;
+            return this;
+        }
+
+        public IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
+        {
+            string propertyName = (predicate.Body as MemberExpression).Member.Name;
+            _properties.Add(propertyName);
             return this;
         }
 
@@ -77,11 +90,6 @@ namespace WriteParameter.Concrete
             columns = columns.StartsWith(",") ? columns.Substring(1) : columns;
             valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
             return $"({columns}) values ({valueColumns})";
-        }
-
-        public IQueryGenerate<TEntity> SelectColumn(Expression<Func<TEntity, TEntity>> predicate)
-        {
-            return this;
         }
     }
 }
