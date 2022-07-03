@@ -13,10 +13,15 @@ namespace WriteParameter.Concrete
     {
         private string _query;
         private string _tableName;
+        public QueryGenerate()
+        {
+
+        }
         public QueryGenerate(string tableName)
         {
             _tableName = tableName;
         }
+
         public string Generate()
         {
             return _query;
@@ -24,13 +29,19 @@ namespace WriteParameter.Concrete
 
         public IQueryGenerate<TEntity> GenerateInsertQuery()
         {
-            _query = String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
+            if (_tableName is null)
+                _query = insertIntoWriteParameters();
+            else
+                _query = String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
             return this;
         }
 
         public IQueryGenerate<TEntity> GenerateUpdateQuery()
         {
-            _query = String.Format($"update {_tableName} {updateWriteParameters()}");
+            if (_tableName is null)
+                _query = updateWriteParameters();
+            else
+                _query = String.Format($"update {_tableName} {updateWriteParameters()}");
             return this;
         }
 

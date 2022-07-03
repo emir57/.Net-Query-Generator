@@ -6,7 +6,7 @@ using WriteParameter.Concrete;
 
 using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
 {
-    string query = new QueryGenerate<Country>("countries")
+    string query = new QueryGenerate<Country>()
         .GenerateUpdateQuery().Generate();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
