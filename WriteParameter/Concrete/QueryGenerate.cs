@@ -23,15 +23,13 @@ namespace WriteParameter
 
         public string GenerateInsertQuery()
         {
-            if (_tableName is null)
-                noSelectedTable();
+            checkTable();
             return String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
         }
 
         public string GenerateUpdateQuery()
         {
-            if (_tableName is null)
-                noSelectedTable();
+            checkTable();
             return String.Format($"update {_tableName} {updateWriteParameters()}");
         }
 
@@ -48,9 +46,10 @@ namespace WriteParameter
             return this;
         }
 
-        private void noSelectedTable()
+        private void checkTable()
         {
-            throw new NoSelectedTableException();
+            if (_tableName is null)
+                throw new NoSelectedTableException();
         }
 
         private string getIdColumn()
