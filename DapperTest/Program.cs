@@ -7,7 +7,7 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
 {
     string query = new QueryGenerate<Country>()
         .SelectColumn(c => c.CountryName)
-        .SetTableName("countries")
+        /*.SetTableName("countries")*/
         .GenerateInsertQuery();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();

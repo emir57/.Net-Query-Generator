@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WriteParameter.Exceptions;
+
 namespace WriteParameter
 {
     public class QueryGenerate<TEntity> : IQueryGenerate<TEntity>
@@ -22,14 +24,14 @@ namespace WriteParameter
         public string GenerateInsertQuery()
         {
             if (_tableName is null)
-                return insertIntoWriteParameters();
+                noSelectedTable();
             return String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
         }
 
         public string GenerateUpdateQuery()
         {
             if (_tableName is null)
-                return updateWriteParameters();
+                noSelectedTable();
             return String.Format($"update {_tableName} {updateWriteParameters()}");
         }
 
@@ -44,6 +46,11 @@ namespace WriteParameter
             PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
             _properties.Add(propertyInfo);
             return this;
+        }
+
+        private void noSelectedTable()
+        {
+            throw new NoSelectedTableException();
         }
 
         private string getIdColumn()
