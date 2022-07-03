@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,6 +77,11 @@ namespace WriteParameter.Concrete
             columns = columns.StartsWith(",") ? columns.Substring(1) : columns;
             valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
             return $"({columns}) values ({valueColumns})";
+        }
+
+        public IQueryGenerate<TEntity> SelectColumn(Expression<Func<TEntity, TEntity>> predicate)
+        {
+            return this;
         }
     }
 }

@@ -7,7 +7,9 @@ using WriteParameter.Concrete;
 using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
 {
     string query = new QueryGenerate<Country>()
-        .GenerateUpdateQuery().Generate();
+        .GenerateUpdateQuery()
+        .SelectColumn(c => c.CountryName)
+        .Generate();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
     var entity = new Country() { CountryId = 18, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };

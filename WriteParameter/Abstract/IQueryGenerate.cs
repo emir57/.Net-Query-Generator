@@ -13,7 +13,7 @@ namespace WriteParameter.Abstract
         IQueryGenerate<TEntity> GenerateInsertQuery();
         IQueryGenerate<TEntity> GenerateUpdateQuery();
         IQueryGenerate<TEntity> SetTableName(string tableName);
-        IQueryGenerate<TEntity> SelectColumn(Expression<Func<TEntity, TEntity>> predicate);
+        IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate);
         string Generate();
     }
 }
