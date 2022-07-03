@@ -11,6 +11,7 @@ namespace WriteParameter.Abstract
     {
         IQueryGenerate<TEntity> GenerateInsertQuery();
         IQueryGenerate<TEntity> GenerateUpdateQuery();
+        IQueryGenerate<TEntity> SetTableName(string tableName);
         string Generate();
     }
 }
