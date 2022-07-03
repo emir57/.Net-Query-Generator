@@ -57,8 +57,9 @@ namespace WriteParameter.Concrete
             return this;
         }
 
-        private string getIdColumn(List<PropertyInfo> properties)
+        private string getIdColumn()
         {
+            var properties = typeof(TEntity).GetProperties().ToList();
             PropertyInfo tryGetId = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
             if (tryGetId is null)
             {
@@ -71,7 +72,7 @@ namespace WriteParameter.Concrete
         private string updateWriteParameters()
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
-            string idPropertyName = getIdColumn(properties);
+            string idPropertyName = getIdColumn();
 
             string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{p.Name}=@{p.Name}"));
 
@@ -82,7 +83,7 @@ namespace WriteParameter.Concrete
         private string insertIntoWriteParameters()
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
-            string idPropertyName = getIdColumn(properties);
+            string idPropertyName = getIdColumn();
 
             string columns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
             string valueColumns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
