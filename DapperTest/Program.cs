@@ -2,14 +2,17 @@
 using DapperTest.Entities;
 using GenerateQuery;
 using System.Data.SqlClient;
+using WriteParameter.Concrete;
 
 using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
 {
+    string query = new QueryGenerate<Country>("countries")
+        .GenerateUpdateQuery().Generate();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
-    var entity = new Country() { CountryId = 17, CountryName = "Türkiye 1", CountryImageUrl = "turkey.jpg" };
+    var entity = new Country() { CountryId = 18, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
     int row = await conn.ExecuteAsync(
-        entity.GenerateUpdateQuery("countries"),
+        query,
         entity);
     Console.WriteLine(row);
     var countries = await conn.QueryAsync<Country>("select * from countries where countryImageUrl like '%g'");

@@ -48,7 +48,7 @@ namespace WriteParameter.Concrete
 
         private string updateWriteParameters()
         {
-            var properties = typeof(TEntity).GetType().GetProperties();
+            var properties = typeof(TEntity).GetProperties();
             string idPropertyName = getIdColumn(properties);
 
             string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{p.Name}=@{p.Name}"));
@@ -59,7 +59,7 @@ namespace WriteParameter.Concrete
         }
         private string insertIntoWriteParameters()
         {
-            var properties = typeof(TEntity).GetType().GetProperties();
+            var properties = typeof(TEntity).GetProperties();
             string idPropertyName = getIdColumn(properties);
 
             string columns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
