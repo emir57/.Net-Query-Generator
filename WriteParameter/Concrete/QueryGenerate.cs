@@ -21,27 +21,18 @@ namespace WriteParameter.Concrete
             _properties = new List<PropertyInfo>();
         }
 
-        public string Generate()
-        {
-            return _query;
-        }
-
-        public IQueryGenerate<TEntity> GenerateInsertQuery()
+        public string GenerateInsertQuery()
         {
             if (_tableName is null)
-                _query = insertIntoWriteParameters();
-            else
-                _query = String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
-            return this;
+                return insertIntoWriteParameters();
+            return String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
         }
 
-        public IQueryGenerate<TEntity> GenerateUpdateQuery()
+        public string GenerateUpdateQuery()
         {
             if (_tableName is null)
-                _query = updateWriteParameters();
-            else
-                _query = String.Format($"update {_tableName} {updateWriteParameters()}");
-            return this;
+                return updateWriteParameters();
+            return String.Format($"update {_tableName} {updateWriteParameters()}");
         }
 
         public IQueryGenerate<TEntity> SetTableName(string tableName)

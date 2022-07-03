@@ -10,10 +10,9 @@ namespace WriteParameter.Abstract
     public interface IQueryGenerate<TEntity>
         where TEntity : class
     {
-        IQueryGenerate<TEntity> GenerateInsertQuery();
-        IQueryGenerate<TEntity> GenerateUpdateQuery();
+        string GenerateInsertQuery();
+        string GenerateUpdateQuery();
         IQueryGenerate<TEntity> SetTableName(string tableName);
         IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate);
-        string Generate();
     }
 }

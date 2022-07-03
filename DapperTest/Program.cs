@@ -8,8 +8,8 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
 {
     string query = new QueryGenerate<Country>()
         .SelectColumn(c => c.CountryName)
-        .GenerateUpdateQuery()
-        .Generate();
+        .SetTableName("countries")
+        .GenerateInsertQuery();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
     var entity = new Country() { CountryId = 18, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
