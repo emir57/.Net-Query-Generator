@@ -13,14 +13,6 @@ namespace WriteParameter.Concrete
     {
         private string _query;
         private string _tableName;
-        public QueryGenerate()
-        {
-
-        }
-        public QueryGenerate(string tableName)
-        {
-            _tableName = tableName;
-        }
 
         public string Generate()
         {
@@ -45,6 +37,11 @@ namespace WriteParameter.Concrete
             return this;
         }
 
+        public IQueryGenerate<TEntity> SetTableName(string tableName)
+        {
+            _tableName = tableName;
+            return this;
+        }
 
         private string getIdColumn(PropertyInfo[] properties)
         {
