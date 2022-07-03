@@ -5,9 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using WriteParameter.Abstract;
-
-namespace WriteParameter.Concrete
+namespace WriteParameter
 {
     public class QueryGenerate<TEntity> : IQueryGenerate<TEntity>
         where TEntity : class

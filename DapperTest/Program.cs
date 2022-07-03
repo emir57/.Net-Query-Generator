@@ -1,8 +1,7 @@
 ﻿using Dapper;
 using DapperTest.Entities;
-using GenerateQuery;
 using System.Data.SqlClient;
-using WriteParameter.Concrete;
+using WriteParameter;
 
 using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
 {
