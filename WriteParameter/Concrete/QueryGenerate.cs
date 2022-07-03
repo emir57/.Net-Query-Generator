@@ -12,13 +12,13 @@ namespace WriteParameter.Concrete
     public class QueryGenerate<TEntity> : IQueryGenerate<TEntity>
         where TEntity : class
     {
-        private List<string> _properties;
+        private List<PropertyInfo> _properties;
         private string _query;
         private string _tableName;
 
         public QueryGenerate()
         {
-            _properties = new List<string>();
+            _properties = new List<PropertyInfo>();
         }
 
         public string Generate()
@@ -52,8 +52,8 @@ namespace WriteParameter.Concrete
 
         public IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
         {
-            string propertyName = (predicate.Body as MemberExpression).Member.Name;
-            _properties.Add(propertyName);
+            PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
+            _properties.Add(propertyInfo);
             return this;
         }
 
