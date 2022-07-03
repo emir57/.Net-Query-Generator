@@ -13,17 +13,22 @@ namespace WriteParameter.Concrete
     {
         private string _query;
         private string _tableName;
+        public QueryGenerate(string tableName)
+        {
+            _tableName = tableName;
+        }
         public string Generate()
         {
             return _query;
         }
 
-        public IQueryGenerate<TEntity> GenerateInsertQuery(TEntity entity)
+        public IQueryGenerate<TEntity> GenerateInsertQuery()
         {
-            throw new NotImplementedException();
+            _query = String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
+            return this;
         }
 
-        public IQueryGenerate<TEntity> GenerateUpdateQuery(TEntity entity)
+        public IQueryGenerate<TEntity> GenerateUpdateQuery()
         {
             _query = String.Format($"update {_tableName} {updateWriteParameters()}");
             return this;

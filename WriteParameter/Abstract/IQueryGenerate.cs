@@ -9,8 +9,8 @@ namespace WriteParameter.Abstract
     public interface IQueryGenerate<TEntity>
         where TEntity : class
     {
-        IQueryGenerate<TEntity> GenerateInsertQuery(TEntity entity);
-        IQueryGenerate<TEntity> GenerateUpdateQuery(TEntity entity);
+        IQueryGenerate<TEntity> GenerateInsertQuery();
+        IQueryGenerate<TEntity> GenerateUpdateQuery();
         string Generate();
     }
 }
