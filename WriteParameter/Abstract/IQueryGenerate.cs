@@ -14,6 +14,7 @@ namespace WriteParameter
         string GenerateUpdateQuery();
         string GenerateDeleteQuery();
         string GenerateGetAllQuery();
+        string GenerateGetByIdQuery();
         IQueryGenerate<TEntity> SelectTable(string tableName);
         IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate);
     }
