@@ -32,6 +32,12 @@ namespace WriteParameter
             checkTable();
             return String.Format($"update {_tableName} {updateWriteParameters()}");
         }
+        public string GenerateDeleteQuery()
+        {
+            checkTable();
+            string idPropertyName = getIdColumn();
+            return String.Format($"delete from {_tableName} where {idPropertyName}=@{idPropertyName}");
+        }
 
         public IQueryGenerate<TEntity> SelectTable(string tableName)
         {
