@@ -39,6 +39,11 @@ namespace WriteParameter
             return this;
         }
 
+        public string GenerateGetAllFunction()
+        {
+            checkTable();
+
+        }
         public IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
         {
             PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
@@ -80,12 +85,19 @@ namespace WriteParameter
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
 
-            string columns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
+            string columns = getParameters();
             string valueColumns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
 
             columns = columns.StartsWith(",") ? columns.Substring(1) : columns;
             valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
             return $"({columns}) values ({valueColumns})";
+        }
+
+        private string getParameters()
+        {
+            var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
+            string idPropertyName = getIdColumn();
+            return String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
         }
     }
 }
