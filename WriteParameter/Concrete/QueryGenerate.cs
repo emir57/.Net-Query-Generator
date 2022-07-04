@@ -42,6 +42,9 @@ namespace WriteParameter
         public string GenerateGetAllFunction()
         {
             checkTable();
+            string parameters = getParameters();
+            string query = String.Format($"select {parameters} from {_tableName}");
+            return query;
 
         }
         public IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
