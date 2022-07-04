@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using WriteParameter.Exceptions;
 
 namespace WriteParameter
@@ -12,9 +7,8 @@ namespace WriteParameter
     public class QueryGenerate<TEntity> : IQueryGenerate<TEntity>
         where TEntity : class
     {
-        private List<PropertyInfo> _properties;
-        private string _query;
-        private string _tableName;
+        protected List<PropertyInfo> _properties;
+        protected string _tableName;
 
         public QueryGenerate()
         {
