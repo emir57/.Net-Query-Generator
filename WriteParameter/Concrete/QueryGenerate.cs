@@ -21,31 +21,31 @@ namespace WriteParameter
             _properties = new List<PropertyInfo>();
         }
 
-        public string GenerateInsertQuery()
+        public virtual string GenerateInsertQuery()
         {
             checkTable();
             return String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
         }
 
-        public string GenerateUpdateQuery()
+        public virtual string GenerateUpdateQuery()
         {
             checkTable();
             return String.Format($"update {_tableName} {updateWriteParameters()}");
         }
-        public string GenerateDeleteQuery()
+        public virtual string GenerateDeleteQuery()
         {
             checkTable();
             string idPropertyName = getIdColumn();
             return String.Format($"delete from {_tableName} where {idPropertyName}=@{idPropertyName}");
         }
 
-        public IQueryGenerate<TEntity> SelectTable(string tableName)
+        public virtual IQueryGenerate<TEntity> SelectTable(string tableName)
         {
             _tableName = tableName;
             return this;
         }
 
-        public string GenerateGetAllQuery()
+        public virtual string GenerateGetAllQuery()
         {
             checkTable();
             string parameters = getParametersWithId();
@@ -53,21 +53,28 @@ namespace WriteParameter
             return query;
         }
 
-        public string GenerateGetByIdQuery()
+        public virtual string GenerateGetByIdQuery()
         {
             return generateGetByIdQuery();
         }
-        public string GenerateGetByIdQuery(int id)
+        public virtual string GenerateGetByIdQuery(int id)
         {
             return generateGetByIdQuery(id);
         }
 
-        public string GenerateGetByIdQuery(string id)
+        public virtual string GenerateGetByIdQuery(string id)
         {
             return generateGetByIdQuery(id);
         }
 
-        private string generateGetByIdQuery(object id = null)
+        public virtual IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
+        {
+            PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
+            _properties.Add(propertyInfo);
+            return this;
+        }
+
+        protected virtual string generateGetByIdQuery(object id = null)
         {
             checkTable();
             string parameters = getParametersWithId();
@@ -77,20 +84,13 @@ namespace WriteParameter
             return query;
         }
 
-        public IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
-        {
-            PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
-            _properties.Add(propertyInfo);
-            return this;
-        }
-
-        private void checkTable()
+        protected virtual void checkTable()
         {
             if (_tableName is null)
                 throw new NoSelectedTableException();
         }
 
-        private string getIdColumn()
+        protected virtual string getIdColumn()
         {
             var properties = typeof(TEntity).GetProperties().ToList();
             PropertyInfo tryGetId = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
@@ -102,7 +102,7 @@ namespace WriteParameter
             return tryGetId.Name;
         }
 
-        private string updateWriteParameters()
+        protected virtual string updateWriteParameters()
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
@@ -113,17 +113,14 @@ namespace WriteParameter
             updateQuery += String.Concat(" ", $"where {idPropertyName}=@{idPropertyName}");
             return $"set {updateQuery}";
         }
-        private string insertIntoWriteParameters()
+        protected virtual string insertIntoWriteParameters()
         {
-            var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
-            string idPropertyName = getIdColumn();
-
             string columns = getParametersWithoutId();
             string valueColumns = getParametersWithoutId("@");
             return $"({columns}) values ({valueColumns})";
         }
 
-        private string getParametersWithoutId(string? previousName = "")
+        protected virtual string getParametersWithoutId(string? previousName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
@@ -131,7 +128,7 @@ namespace WriteParameter
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
-        private string getParametersWithId(string? previousName = "")
+        protected virtual string getParametersWithId(string? previousName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}"));
