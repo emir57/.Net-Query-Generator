@@ -88,25 +88,23 @@ namespace WriteParameter
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
 
-            string columns = getParameters();
-            string valueColumns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
-
-            valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
+            string columns = getParametersWithoutId();
+            string valueColumns = getParametersWithoutId("@");
             return $"({columns}) values ({valueColumns})";
         }
 
-        private string getParameters()
+        private string getParametersWithoutId(string? previousName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
-            string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
+            string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{previousName}{p.Name}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
-        private string getParametersWithId()
+        private string getParametersWithId(string? previousName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
-            string parameters = String.Join(",", properties.Select(p => p.Name));
+            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }

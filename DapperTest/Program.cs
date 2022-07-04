@@ -7,14 +7,14 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
 {
     string query = new QueryGenerate<Country>()
         .SetTableName("countries")
-        .GenerateGetAllFunction();
+        .GenerateInsertQuery();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
-    //var entity = new Country() { CountryId = 18, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
-    //int row = await conn.ExecuteAsync(
-    //    query,
-    //    entity);
-    //Console.WriteLine(row);
+    var entity = new Country() { CountryId = 18, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
+    int row = await conn.ExecuteAsync(
+        query,
+        entity);
+    Console.WriteLine(row);
     var countries = await conn.QueryAsync<Country>(query);
     foreach (var country in countries)
     {
