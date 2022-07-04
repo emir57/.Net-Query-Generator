@@ -51,8 +51,17 @@ namespace WriteParameter
             string parameters = getParametersWithId();
             string query = String.Format($"select {parameters} from {_tableName}");
             return query;
-
         }
+
+        public string GenerateGetByIdQuery()
+        {
+            checkTable();
+            string parameters = getParametersWithId();
+            string idColumn = getIdColumn();
+            string query = String.Format($"select {parameters} from {_tableName} where {idColumn}=@{idColumn}");
+            return query;
+        }
+
         public IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
         {
             PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
@@ -114,5 +123,6 @@ namespace WriteParameter
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
+
     }
 }
