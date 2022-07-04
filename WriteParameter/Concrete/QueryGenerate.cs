@@ -22,6 +22,10 @@ namespace WriteParameter
         {
             _properties = properties;
         }
+        public QueryGenerate(PropertyInfo[] properties)
+        {
+            _properties = properties.ToList();
+        }
 
 
         public virtual string GenerateInsertQuery()
