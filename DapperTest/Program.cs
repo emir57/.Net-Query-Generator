@@ -7,8 +7,6 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
 {
     string query = new QueryGenerate<Country>()
         .SetTableName("countries")
-        .SelectColumn(x => x.CountryName)
-        .SelectColumn(x => x.CountryId)
         .GenerateGetAllFunction();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
