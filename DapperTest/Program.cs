@@ -6,17 +6,16 @@ using WriteParameter;
 using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
 {
     string query = new QueryGenerate<Country>()
-        .SelectColumn(c => c.CountryName)
-        /*.SetTableName("countries")*/
-        .GenerateInsertQuery();
+        .SetTableName("countries")
+        .GenerateGetAllFunction();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();
-    var entity = new Country() { CountryId = 18, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
-    int row = await conn.ExecuteAsync(
-        query,
-        entity);
-    Console.WriteLine(row);
-    var countries = await conn.QueryAsync<Country>("select * from countries where countryImageUrl like '%g'");
+    //var entity = new Country() { CountryId = 18, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
+    //int row = await conn.ExecuteAsync(
+    //    query,
+    //    entity);
+    //Console.WriteLine(row);
+    var countries = await conn.QueryAsync<Country>(query);
     foreach (var country in countries)
     {
         Console.WriteLine($"{country.CountryId} {country.CountryName} {country.CountryImageUrl}");

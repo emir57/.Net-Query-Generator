@@ -91,7 +91,6 @@ namespace WriteParameter
             string columns = getParameters();
             string valueColumns = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
 
-            columns = columns.StartsWith(",") ? columns.Substring(1) : columns;
             valueColumns = valueColumns.StartsWith(",") ? valueColumns.Substring(1) : valueColumns;
             return $"({columns}) values ({valueColumns})";
         }
@@ -100,7 +99,9 @@ namespace WriteParameter
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
-            return String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
+            string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
+            parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
+            return parameters;
         }
     }
 }
