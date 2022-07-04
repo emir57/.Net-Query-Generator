@@ -55,27 +55,25 @@ namespace WriteParameter
 
         public string GenerateGetByIdQuery()
         {
-            checkTable();
-            string parameters = getParametersWithId();
-            string idColumn = getIdColumn();
-            string query = String.Format($"select {parameters} from {_tableName} where {idColumn}=@{idColumn}");
-            return query;
+            return generateGetByIdQuery();
         }
         public string GenerateGetByIdQuery(int id)
         {
-            checkTable();
-            string parameters = getParametersWithId();
-            string idColumn = getIdColumn();
-            string query = String.Format($"select {parameters} from {_tableName} where {idColumn}={id}");
-            return query;
+            return generateGetByIdQuery(id);
         }
 
         public string GenerateGetByIdQuery(string id)
         {
+            return generateGetByIdQuery(id);
+        }
+
+        private string generateGetByIdQuery(object id = null)
+        {
             checkTable();
             string parameters = getParametersWithId();
             string idColumn = getIdColumn();
-            string query = String.Format($"select {parameters} from {_tableName} where {idColumn}={id}");
+            string predicate = id == null ? $"{idColumn}=@{idColumn}" : $"{idColumn}={id}";
+            string query = String.Format($"select {parameters} from {_tableName} where {predicate}");
             return query;
         }
 
