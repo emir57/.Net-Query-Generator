@@ -42,7 +42,7 @@ namespace WriteParameter
         public string GenerateGetAllFunction()
         {
             checkTable();
-            string parameters = getParameters();
+            string parameters = getParametersWithId();
             string query = String.Format($"select {parameters} from {_tableName}");
             return query;
 
@@ -100,6 +100,13 @@ namespace WriteParameter
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
             string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : p.Name));
+            parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
+            return parameters;
+        }
+        private string getParametersWithId()
+        {
+            var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
+            string parameters = String.Join(",", properties.Select(p => p.Name));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
