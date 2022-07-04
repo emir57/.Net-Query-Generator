@@ -6,7 +6,7 @@ using WriteParameter;
 using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
 {
     string query = new QueryGenerate<Country>()
-        .SetTableName("countries")
+        .SelectTable("countries")
         .GenerateInsertQuery();
     if (conn.State != System.Data.ConnectionState.Open)
         await conn.OpenAsync();

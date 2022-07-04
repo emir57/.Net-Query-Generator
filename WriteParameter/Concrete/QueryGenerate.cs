@@ -33,7 +33,7 @@ namespace WriteParameter
             return String.Format($"update {_tableName} {updateWriteParameters()}");
         }
 
-        public IQueryGenerate<TEntity> SetTableName(string tableName)
+        public IQueryGenerate<TEntity> SelectTable(string tableName)
         {
             _tableName = tableName;
             return this;
