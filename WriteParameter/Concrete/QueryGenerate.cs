@@ -39,7 +39,7 @@ namespace WriteParameter
             return this;
         }
 
-        public string GenerateGetAllFunction()
+        public string GenerateGetAllQuery()
         {
             checkTable();
             string parameters = getParametersWithId();
