@@ -10,15 +10,19 @@ namespace WriteParameter
         protected List<PropertyInfo> _properties;
         protected string _tableName;
 
-        public QueryGenerate(string tableName) : this()
-        {
-            _tableName = tableName;
-        }
-
         public QueryGenerate()
         {
             _properties = new List<PropertyInfo>();
         }
+        public QueryGenerate(string tableName) : this()
+        {
+            _tableName = tableName;
+        }
+        public QueryGenerate(List<PropertyInfo> properties)
+        {
+            _properties = properties;
+        }
+
 
         public virtual string GenerateInsertQuery()
         {
