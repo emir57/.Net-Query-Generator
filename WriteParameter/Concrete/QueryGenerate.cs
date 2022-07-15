@@ -108,8 +108,12 @@ namespace WriteParameter
 
         protected virtual string getIdColumn()
         {
+            if (_idColumn != null)
+                return _idColumn.Name;
+
             var properties = typeof(TEntity).GetProperties().ToList();
             PropertyInfo tryGetId = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
+
             if (tryGetId is null)
             {
                 PropertyInfo tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().Contains("ID"));
