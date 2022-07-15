@@ -106,6 +106,12 @@ namespace WriteParameter
                 throw new NoSelectedTableException();
         }
 
+        protected virtual void checkIdColumn()
+        {
+            if (_idColumn is null)
+                throw new NotFoundIdColumn();
+        }
+
         protected virtual string getIdColumn()
         {
             if (_idColumn != null)
@@ -117,7 +123,7 @@ namespace WriteParameter
             if (tryGetId is null)
             {
                 PropertyInfo tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().EndsWith("ID"));
-                
+
                 if (tryGetContainsId is null)
                     tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().StartsWith("ID"));
 
