@@ -9,6 +9,7 @@ namespace WriteParameter
     {
         protected List<PropertyInfo> _properties;
         protected string _tableName;
+        protected PropertyInfo _idColumn;
 
         public QueryGenerate()
         {
@@ -81,6 +82,14 @@ namespace WriteParameter
             return this;
         }
 
+        public virtual IQueryGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        {
+            PropertyInfo selectedIdColumn = (expression.Body as MemberExpression).Member as PropertyInfo;
+            if (selectedIdColumn != null)
+                _idColumn = selectedIdColumn;
+            return this;
+        }
+
         protected virtual string generateGetByIdQuery(object id = null)
         {
             checkTable();
@@ -142,6 +151,5 @@ namespace WriteParameter
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
-
     }
 }
