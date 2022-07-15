@@ -118,20 +118,17 @@ namespace WriteParameter
                 return _idColumn.Name;
 
             var properties = typeof(TEntity).GetProperties().ToList();
-            PropertyInfo tryGetId = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
+            _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
 
-            if (tryGetId is null)
+            if (_idColumn is null)
             {
-                PropertyInfo tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().EndsWith("ID"));
-
-                if (tryGetContainsId is null)
-                    tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().StartsWith("ID"));
+                _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper().EndsWith("ID"));
+                if (_idColumn is null)
+                    _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper().StartsWith("ID"));
 
                 checkIdColumn();
-
-                return tryGetContainsId.Name;
             }
-            return tryGetId.Name;
+            return _idColumn.Name;
         }
 
         protected virtual string updateWriteParameters()
