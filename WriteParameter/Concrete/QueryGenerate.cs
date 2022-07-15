@@ -19,9 +19,9 @@ namespace WriteParameter
         {
             _tableName = tableName;
         }
-        public QueryGenerate(List<PropertyInfo> properties)
+        public QueryGenerate(IEnumerable<PropertyInfo> properties)
         {
-            _properties = properties;
+            _properties = properties.ToList();
         }
         public QueryGenerate(PropertyInfo[] properties)
         {
