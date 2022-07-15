@@ -13,6 +13,7 @@ namespace WriteParameter
         string GenerateGetByIdQuery(int id);
         string GenerateGetByIdQuery(string id);
         IQueryGenerate<TEntity> SelectTable(string tableName);
-        IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate);
+        IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
+        IQueryGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
     }
 }
