@@ -116,7 +116,11 @@ namespace WriteParameter
 
             if (tryGetId is null)
             {
-                PropertyInfo tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().Contains("ID"));
+                PropertyInfo tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().EndsWith("ID"));
+                
+                if (tryGetContainsId is null)
+                    tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().StartsWith("ID"));
+
                 return tryGetContainsId.Name;
             }
             return tryGetId.Name;
