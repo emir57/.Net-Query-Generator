@@ -21,7 +21,7 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     //    Console.WriteLine($"{country.CountryId} {country.CountryName} {country.CountryImageUrl}");
     //}
     Console.WriteLine("-------");
-    var getCountry = await conn.QueryFirstOrDefaultAsync<Country>(query,entity);
+    var getCountry = await conn.QueryFirstOrDefaultAsync<Country>(query, entity);
     Console.WriteLine($"{getCountry?.CountryId} {getCountry?.CountryName} {getCountry?.CountryImageUrl}");
     Console.WriteLine("-------");
     var driverTeams = await conn.QueryAsync<DriverTeam>("select d.DriverName,t.Name as TeamName,d.DriverSurname from drivers d, teams t where d.TeamId = t.TeamId order by TeamName asc,DriverName asc");
