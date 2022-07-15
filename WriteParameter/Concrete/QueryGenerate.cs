@@ -127,6 +127,8 @@ namespace WriteParameter
                 if (tryGetContainsId is null)
                     tryGetContainsId = properties.FirstOrDefault(p => p.Name.ToUpper().StartsWith("ID"));
 
+                checkIdColumn();
+
                 return tryGetContainsId.Name;
             }
             return tryGetId.Name;
