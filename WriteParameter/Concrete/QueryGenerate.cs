@@ -109,7 +109,7 @@ namespace WriteParameter
         protected virtual void checkIdColumn()
         {
             if (_idColumn is null)
-                throw new NotFoundIdColumn();
+                throw new NotFoundIdColumnException();
         }
 
         protected virtual string getIdColumn()
