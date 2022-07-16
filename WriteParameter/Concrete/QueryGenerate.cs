@@ -133,7 +133,8 @@ namespace WriteParameter
         protected virtual void checkSchema()
         {
             if (_schema is null)
-                throw new NoSelectedSchemaException();
+                _schema = "dbo";
+            //throw new NoSelectedSchemaException();
         }
 
         protected virtual void checkIdColumn()
