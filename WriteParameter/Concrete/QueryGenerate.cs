@@ -54,6 +54,12 @@ namespace WriteParameter
             return this;
         }
 
+        public IQueryGenerate<TEntity> SelectSchema(string schema)
+        {
+            _schema = schema.ToLower();
+            return this;
+        }
+
         public virtual string GenerateGetAllQuery()
         {
             checkTable();
@@ -165,5 +171,6 @@ namespace WriteParameter
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
+
     }
 }
