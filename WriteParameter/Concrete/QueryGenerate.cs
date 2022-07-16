@@ -112,6 +112,11 @@ namespace WriteParameter
             if (_tableName is null)
                 throw new NoSelectedTableException();
         }
+        protected virtual void checkSchema()
+        {
+            if (_schema is null)
+                throw new NoSelectedSchemaException();
+        }
 
         protected virtual void checkIdColumn()
         {
