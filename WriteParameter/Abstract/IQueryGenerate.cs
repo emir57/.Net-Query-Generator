@@ -17,5 +17,6 @@ namespace WriteParameter
         IQueryGenerate<TEntity> SelectSchema(string schema);
         IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IQueryGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
+        IQueryGenerate<TEntity> SelectIdColumn<TProperty>(string idColumn);
     }
 }

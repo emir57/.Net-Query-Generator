@@ -117,6 +117,14 @@ namespace WriteParameter
             return this;
         }
 
+        public IQueryGenerate<TEntity> SelectIdColumn<TProperty>(string idColumn)
+        {
+            PropertyInfo selectedIdColumn = typeof(TEntity).GetProperties().SingleOrDefault(x => x.Name.ToUpper() == idColumn.ToUpper());
+            if (selectedIdColumn != null)
+                _idColumn = selectedIdColumn;
+            return this;
+        }
+
         protected virtual void checkTable()
         {
             if (_tableName is null)
@@ -186,5 +194,6 @@ namespace WriteParameter
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
+
     }
 }
