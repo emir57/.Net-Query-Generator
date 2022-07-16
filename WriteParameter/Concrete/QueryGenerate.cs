@@ -143,10 +143,10 @@ namespace WriteParameter
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
 
-            string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{p.Name}=@{p.Name}"));
+            string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{p.Name.ToLower()}=@{p.Name}"));
 
             updateQuery = updateQuery.StartsWith(",") ? updateQuery.Substring(1) : updateQuery;
-            updateQuery += String.Concat(" ", $"where {idPropertyName}=@{idPropertyName}");
+            updateQuery += String.Concat(" ", $"where {idPropertyName.ToLower()}=@{idPropertyName}");
             return $"set {updateQuery}";
         }
         protected virtual string insertIntoWriteParameters()
@@ -160,14 +160,14 @@ namespace WriteParameter
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
-            string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{previousName}{p.Name}"));
+            string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{previousName}{p.Name.ToLower()}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
         protected virtual string getParametersWithId(string? previousName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
-            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}"));
+            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name.ToLower()}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
