@@ -64,6 +64,12 @@ namespace WriteParameter
             _tableName = tableName.ToLower();
             return this;
         }
+        public IQueryGenerate<TEntity> SelectTable(string tableName, string schema)
+        {
+            _tableName = tableName.ToLower();
+            _schema = schema.ToLower();
+            return this;
+        }
 
         public IQueryGenerate<TEntity> SelectSchema(string schema)
         {
@@ -180,6 +186,5 @@ namespace WriteParameter
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
-
     }
 }
