@@ -9,6 +9,7 @@ namespace WriteParameter
     {
         protected List<PropertyInfo> _properties;
         protected string _tableName;
+        protected string _schema;
         protected PropertyInfo _idColumn;
 
         public QueryGenerate()
@@ -49,7 +50,7 @@ namespace WriteParameter
 
         public virtual IQueryGenerate<TEntity> SelectTable(string tableName)
         {
-            _tableName = tableName;
+            _tableName = tableName.ToLower();
             return this;
         }
 
