@@ -33,19 +33,19 @@ namespace WriteParameter
         public virtual string GenerateInsertQuery()
         {
             checkTable();
-            return String.Format($"insert into {_tableName} {insertIntoWriteParameters()}");
+            return String.Format($"insert into {_schema}.{_tableName} {insertIntoWriteParameters()}");
         }
 
         public virtual string GenerateUpdateQuery()
         {
             checkTable();
-            return String.Format($"update {_tableName} {updateWriteParameters()}");
+            return String.Format($"update {_schema}.{_tableName} {updateWriteParameters()}");
         }
         public virtual string GenerateDeleteQuery()
         {
             checkTable();
             string idPropertyName = getIdColumn();
-            return String.Format($"delete from {_tableName} where {idPropertyName}=@{idPropertyName}");
+            return String.Format($"delete from {_schema}.{_tableName} where {idPropertyName}=@{idPropertyName}");
         }
 
         public virtual IQueryGenerate<TEntity> SelectTable(string tableName)
@@ -64,7 +64,7 @@ namespace WriteParameter
         {
             checkTable();
             string parameters = getParametersWithId();
-            string query = String.Format($"select {parameters} from {_tableName}");
+            string query = String.Format($"select {_schema}.{parameters} from {_tableName}");
             return query;
         }
 
@@ -103,7 +103,7 @@ namespace WriteParameter
             string parameters = getParametersWithId();
             string idColumn = getIdColumn();
             string predicate = id == null ? $"{idColumn}=@{idColumn}" : $"{idColumn}={id}";
-            string query = String.Format($"select {parameters} from {_tableName} where {predicate}");
+            string query = String.Format($"select {parameters} from {_schema}.{_tableName} where {predicate}");
             return query;
         }
 
@@ -122,7 +122,7 @@ namespace WriteParameter
         protected virtual string getIdColumn()
         {
             if (_idColumn != null)
-                return _idColumn.Name;
+                return _idColumn.Name.ToLower();
 
             var properties = typeof(TEntity).GetProperties().ToList();
             _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
@@ -135,7 +135,7 @@ namespace WriteParameter
 
                 checkIdColumn();
             }
-            return _idColumn.Name;
+            return _idColumn.Name.ToLower();
         }
 
         protected virtual string updateWriteParameters()
