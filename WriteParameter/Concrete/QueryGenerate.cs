@@ -11,6 +11,7 @@ namespace WriteParameter
         protected string _tableName;
         protected string _schema;
         protected PropertyInfo _idColumn;
+        protected string _orderBy;
 
         public QueryGenerate()
         {
@@ -195,5 +196,20 @@ namespace WriteParameter
             return parameters;
         }
 
+        public IQueryGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TProperty>> expression)
+        {
+
+        }
+
+        public IQueryGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TProperty>> expression)
+        {
+
+        }
+
+        protected PropertyInfo GetProperty<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        {
+            PropertyInfo propertyInfo = (expression.Body as MemberExpression).Member as PropertyInfo;
+            return propertyInfo;
+        }
     }
 }
