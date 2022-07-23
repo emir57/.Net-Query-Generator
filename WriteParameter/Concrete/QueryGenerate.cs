@@ -190,7 +190,7 @@ namespace WriteParameter
         protected virtual string getParametersWithId(string? previousName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
-            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name.ToLower()}"));
+            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
