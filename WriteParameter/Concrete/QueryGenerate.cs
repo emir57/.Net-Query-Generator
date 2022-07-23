@@ -55,7 +55,7 @@ namespace WriteParameter
             checkTable();
             checkSchema();
             string parameters = getParametersWithId();
-            string query = String.Format($"select {_schema}.{parameters} from {_tableName}");
+            string query = String.Format($"select {parameters} from {_schema}.{_tableName}");
             return query.Replace("ı", "i");
         }
 
