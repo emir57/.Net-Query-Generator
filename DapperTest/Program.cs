@@ -11,6 +11,8 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
         .SelectIdColumn(x => x.CountryId)
         .OrderByDescending(x => x.CountryName)
         .GenerateGetAllQuery();
+
+    #region Add or Update
     //if (conn.State != System.Data.ConnectionState.Open)
     //    await conn.OpenAsync();
     //var entity = new Country() { CountryId = 13, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
@@ -18,6 +20,7 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     //    query,
     //    entity);
     //Console.WriteLine(row);
+    #endregion
     var countries = await conn.QueryAsync<Country>(query);
     foreach (var country in countries)
     {
