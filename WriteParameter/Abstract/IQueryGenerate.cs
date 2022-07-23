@@ -18,5 +18,8 @@ namespace WriteParameter
         IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IQueryGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IQueryGenerate<TEntity> SelectIdColumn<TProperty>(string idColumn);
+
+        IQueryGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TProperty>> expression);
+        IQueryGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TProperty>> expression);
     }
 }
