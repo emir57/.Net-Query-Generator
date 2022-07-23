@@ -9,6 +9,7 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
         .SelectSchema("dbo")
         .SelectTable("countries")
         .SelectIdColumn(x => x.CountryId)
+        .OrderBy(x => x.CountryName)
         .GenerateGetAllQuery();
     //if (conn.State != System.Data.ConnectionState.Open)
     //    await conn.OpenAsync();
