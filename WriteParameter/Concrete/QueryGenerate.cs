@@ -196,14 +196,18 @@ namespace WriteParameter
             return parameters;
         }
 
-        public IQueryGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TProperty>> expression)
+        public IQueryGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
-
+            PropertyInfo propertyInfo = GetProperty(expression);
+            _orderBy = $"order by {propertyInfo.Name}";
+            return this;
         }
 
-        public IQueryGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TProperty>> expression)
+        public IQueryGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
-
+            PropertyInfo propertyInfo = GetProperty(expression);
+            _orderBy = $"order by {propertyInfo.Name} desc";
+            return this;
         }
 
         protected PropertyInfo GetProperty<TProperty>(Expression<Func<TEntity, TProperty>> expression)
