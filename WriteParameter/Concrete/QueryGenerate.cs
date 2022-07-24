@@ -166,14 +166,7 @@ namespace WriteParameter
 
             _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
 
-            if (_idColumn is null)
-            {
-                _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper().EndsWith("ID"));
-                if (_idColumn is null)
-                    _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper().StartsWith("ID"));
-
-                checkIdColumn();
-            }
+            checkIdColumn();
             return _idColumn.Name;
         }
 
