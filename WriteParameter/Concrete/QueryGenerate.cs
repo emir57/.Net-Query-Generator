@@ -162,7 +162,7 @@ namespace WriteParameter
                 }
             }
             if (idAttributeCount > 1)
-                throw new Exception();
+                throw new MoreThanOneIdColumnException();
 
             _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
 
