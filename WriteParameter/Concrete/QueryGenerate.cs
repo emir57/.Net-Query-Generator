@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Globalization;
+using System.Linq.Expressions;
 using System.Reflection;
 using WriteParameter.Attributes;
 using WriteParameter.Exceptions;
@@ -13,10 +14,12 @@ namespace WriteParameter
         protected string _schema;
         protected PropertyInfo _idColumn;
         protected string _orderBy;
+        protected CultureInfo _cultureInfo;
 
         public QueryGenerate()
         {
             _properties = new List<PropertyInfo>();
+            _cultureInfo = new CultureInfo("en-US");
         }
         public QueryGenerate(string tableName) : this()
         {
@@ -36,29 +39,29 @@ namespace WriteParameter
         {
             checkTable();
             checkSchema();
-            return String.Format($"insert into {_schema}.{_tableName} {insertIntoWriteParameters()}").Replace("ı", "i");
+            return String.Format(_cultureInfo, $"insert into {_schema}.{_tableName} {insertIntoWriteParameters()}").Replace("ı", "i");
         }
 
         public virtual string GenerateUpdateQuery()
         {
             checkTable();
             checkSchema();
-            return String.Format($"update {_schema}.{_tableName} {updateWriteParameters()}").Replace("ı", "i");
+            return String.Format(_cultureInfo, $"update {_schema}.{_tableName} {updateWriteParameters()}").Replace("ı", "i");
         }
         public virtual string GenerateDeleteQuery()
         {
             checkTable();
             checkSchema();
             string idPropertyName = getIdColumn();
-            return String.Format($"delete from {_schema}.{_tableName} where {idPropertyName}=@{idPropertyName}").Replace("ı", "i");
+            return String.Format(_cultureInfo, $"delete from {_schema}.{_tableName} where {idPropertyName}=@{idPropertyName}").Replace("ı", "i");
         }
         public virtual string GenerateGetAllQuery()
         {
             checkTable();
             checkSchema();
             string parameters = getParametersWithId();
-            string query = String.Format($"select {parameters} from {_schema}.{_tableName} {_orderBy}");
-            return query.Replace("ı", "i");
+            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {_orderBy}");
+            return query;
         }
 
         public virtual IQueryGenerate<TEntity> SelectTable(string tableName)
@@ -100,8 +103,8 @@ namespace WriteParameter
             string parameters = getParametersWithId();
             string idColumn = getIdColumn();
             string whereQuery = id == null ? $"{idColumn}=@{idColumn}" : $"{idColumn}={id}";
-            string query = String.Format($"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
-            return query.Replace("ı", "i");
+            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
+            return query;
         }
 
         public virtual IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
@@ -162,7 +165,7 @@ namespace WriteParameter
                 }
             }
             if (idAttributeCount > 1)
-                 throw new MoreThanOneIdColumnException();
+                throw new MoreThanOneIdColumnException();
 
             _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
 
