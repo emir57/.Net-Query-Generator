@@ -146,6 +146,8 @@ namespace WriteParameter
 
         protected virtual string getIdColumn()
         {
+            byte idAttributeCount = 0;
+
             if (_idColumn != null)
                 return _idColumn.Name;
 
@@ -153,15 +155,16 @@ namespace WriteParameter
             _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
             foreach (var property in properties)
             {
-                var attributes = property.GetCustomAttributes(false);
-                for (int i = 0; i < attributes.Length; i++)
+                var attribute = property.GetCustomAttributes(false).FirstOrDefault(a => a.GetType() == typeof(IdColumnAttribute));
+                if (attribute is IdColumnAttribute)
                 {
-                    if (attributes[i] is IdColumnAttribute)
-                    {
-                        _idColumn = property;
-                    }
+                    idAttributeCount++;
+                    _idColumn = property;
                 }
             }
+            if (idAttributeCount > 1)
+                throw new Exception();
+
             if (_idColumn is null)
             {
                 _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper().EndsWith("ID"));
