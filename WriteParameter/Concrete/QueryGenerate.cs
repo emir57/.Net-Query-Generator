@@ -154,7 +154,7 @@ namespace WriteParameter
             byte idAttributeCount = 0;
             foreach (var property in properties)
             {
-                var attribute = property.GetCustomAttributes(false).FirstOrDefault(a => a.GetType() == typeof(IdColumnAttribute));
+                var attribute = property.GetCustomAttributes(true).FirstOrDefault(a => a.GetType() == typeof(IdColumnAttribute));
                 if (attribute is IdColumnAttribute)
                 {
                     idAttributeCount++;
