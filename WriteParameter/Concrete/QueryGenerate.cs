@@ -146,13 +146,12 @@ namespace WriteParameter
 
         protected virtual string getIdColumn()
         {
-            byte idAttributeCount = 0;
-
             if (_idColumn != null)
                 return _idColumn.Name;
 
             var properties = typeof(TEntity).GetProperties().ToList();
-            _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
+
+            byte idAttributeCount = 0;
             foreach (var property in properties)
             {
                 var attribute = property.GetCustomAttributes(false).FirstOrDefault(a => a.GetType() == typeof(IdColumnAttribute));
@@ -164,6 +163,8 @@ namespace WriteParameter
             }
             if (idAttributeCount > 1)
                 throw new Exception();
+
+            _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
 
             if (_idColumn is null)
             {
