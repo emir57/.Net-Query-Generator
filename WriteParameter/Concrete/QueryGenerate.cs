@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using WriteParameter.Attributes;
 using WriteParameter.Exceptions;
 
 namespace WriteParameter
@@ -98,8 +99,8 @@ namespace WriteParameter
             checkSchema();
             string parameters = getParametersWithId();
             string idColumn = getIdColumn();
-            string predicate = id == null ? $"{idColumn.ToLower()}=@{idColumn}" : $"{idColumn.ToLower()}={id}";
-            string query = String.Format($"select {parameters} from {_schema}.{_tableName} where {predicate}");
+            string whereQuery = id == null ? $"{idColumn}=@{idColumn}" : $"{idColumn}={id}";
+            string query = String.Format($"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
             return query.Replace("ı", "i");
         }
 
@@ -150,7 +151,17 @@ namespace WriteParameter
 
             var properties = typeof(TEntity).GetProperties().ToList();
             _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
-
+            foreach (var property in properties)
+            {
+                var attributes = property.GetCustomAttributes(false);
+                for (int i = 0; i < attributes.Length; i++)
+                {
+                    if (attributes[i] is IdColumnAttribute)
+                    {
+                        _idColumn = property;
+                    }
+                }
+            }
             if (_idColumn is null)
             {
                 _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper().EndsWith("ID"));
