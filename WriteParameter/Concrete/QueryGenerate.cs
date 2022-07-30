@@ -213,15 +213,24 @@ namespace WriteParameter
 
         public virtual string GenerateGetAllOrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
-            PropertyInfo propertyInfo = GetProperty(expression);
-            _orderBy = $"order by {propertyInfo.Name}";
-            return getAllQuery(_orderBy);
+            return GetAllOrderBy(_orderBy, expression);
         }
 
         public virtual string GenerateGetAllOrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
+            return GetAllOrderByDescending(_orderBy, expression);
+        }
+
+        protected virtual string GetAllOrderBy<TProperty>(string orderBy, Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
+        {
             PropertyInfo propertyInfo = GetProperty(expression);
-            _orderBy = $"order by {propertyInfo.Name} desc";
+            _orderBy = $"order by {previousName}{propertyInfo.Name}{lastName}";
+            return getAllQuery(_orderBy);
+        }
+        protected virtual string GetAllOrderByDescending<TProperty>(string orderBy, Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
+        {
+            PropertyInfo propertyInfo = GetProperty(expression);
+            _orderBy = $"order by {previousName}{propertyInfo.Name}{lastName} desc";
             return getAllQuery(_orderBy);
         }
 
