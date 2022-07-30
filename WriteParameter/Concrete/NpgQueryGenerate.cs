@@ -42,5 +42,9 @@ namespace WriteParameter
         {
             return base.getIdColumn("\"", "\"");
         }
+        protected override string updateWriteParameters(string? previousName = "", string? lastName = "")
+        {
+            return base.updateWriteParameters("\"", "\"");
+        }
     }
 }

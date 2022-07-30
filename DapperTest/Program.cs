@@ -9,24 +9,24 @@ using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=local
     string query = new NpgQueryGenerate<Country>()
         .SelectSchema("dbo")
         .SelectTable("country")
-        .GenerateGetByIdQuery(1);
+        .GenerateUpdateQuery();
 
     #region Add or Update
-    //if (conn.State != System.Data.ConnectionState.Open)
-    //    await conn.OpenAsync();
-    //var entity = new Country() { CountryId = 13, CountryName = "Türkiye 3", CountryImageUrl = "turkey.jpg" };
-    //int row = await conn.ExecuteAsync(
-    //    query,
-    //    entity);
-    //Console.WriteLine(row);
+    if (conn.State != System.Data.ConnectionState.Open)
+        await conn.OpenAsync();
+    var entity = new Country() { CountryId = 7, CountryName = "TURKEY 3", Continent = "ASIA", Currency = "TRY" };
+    int row = await conn.ExecuteAsync(
+        query,
+        entity);
+    Console.WriteLine(row);
     #endregion
 
     #region GetAll
-    var countries = await conn.QueryAsync<Country>(query);
-    foreach (var country in countries)
-    {
-        Console.WriteLine($"{country.CountryId} {country.CountryName} {country.Continent}");
-    }
+    //var countries = await conn.QueryAsync<Country>(query);
+    //foreach (var country in countries)
+    //{
+    //    Console.WriteLine($"{country.CountryId} {country.CountryName} {country.Continent}");
+    //}
     #endregion
 
 
