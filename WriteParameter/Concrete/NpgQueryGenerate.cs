@@ -29,5 +29,13 @@ namespace WriteParameter
         {
             return base.getParametersWithoutId("\"", "\"");
         }
+        protected override string GetAllOrderBy<TProperty>(string orderBy, System.Linq.Expressions.Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
+        {
+            return base.GetAllOrderBy(orderBy, expression, "\"", "\"");
+        }
+        protected override string GetAllOrderByDescending<TProperty>(string orderBy, System.Linq.Expressions.Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
+        {
+            return base.GetAllOrderByDescending(orderBy, expression, "\"", "\"");
+        }
     }
 }
