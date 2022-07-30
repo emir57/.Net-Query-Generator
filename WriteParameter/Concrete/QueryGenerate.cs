@@ -143,18 +143,18 @@ namespace WriteParameter
             return $"({columns}) values ({valueColumns})";
         }
 
-        protected virtual string getParametersWithoutId(string? previousName = "")
+        protected virtual string getParametersWithoutId(string? previousName = "", string? lastName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
             string idPropertyName = getIdColumn();
-            string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{previousName}{p.Name.ToLower()}"));
+            string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{previousName}{p.Name}{lastName}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
-        protected virtual string getParametersWithId(string? previousName = "")
+        protected virtual string getParametersWithId(string? previousName = "", string? lastName = "")
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
-            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}"));
+            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}{lastName}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }

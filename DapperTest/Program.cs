@@ -1,13 +1,14 @@
 ﻿using Dapper;
 using DapperTest.Entities;
+using Npgsql;
 using System.Data.SqlClient;
 using WriteParameter;
 
-using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database=F1Project;integrated security=true"))
+using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=localhost;Port=5432;Database=PATIKA;"))
 {
-    string query = new QueryGenerate<Country>()
+    string query = new NpgQueryGenerate<Country>()
         .SelectSchema("dbo")
-        .SelectTable("countries")
+        .SelectTable("country")
         .GenerateGetAllOrderBy(x => x.CountryName);
 
     #region Add or Update
@@ -24,7 +25,7 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     var countries = await conn.QueryAsync<Country>(query);
     foreach (var country in countries)
     {
-        Console.WriteLine($"{country.CountryId} {country.CountryName} {country.CountryImageUrl}");
+        Console.WriteLine($"{country.CountryId} {country.CountryName} {country.Continent}");
     }
     #endregion
 
