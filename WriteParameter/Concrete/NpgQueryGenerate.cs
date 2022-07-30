@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq.Expressions;
+using System.Reflection;
 
 namespace WriteParameter
 {
@@ -21,19 +22,19 @@ namespace WriteParameter
         {
         }
 
-        protected override string getParametersWithId(string? previousName = "\"", string? lastName = "\"")
+        protected override string getParametersWithId(string? previousName = "", string? lastName = "")
         {
             return base.getParametersWithId("\"", "\"");
         }
-        protected override string getParametersWithoutId(string? previousName = "", string? lastName = "\"")
+        protected override string getParametersWithoutId(string? previousName = "", string? lastName = "")
         {
             return base.getParametersWithoutId("\"", "\"");
         }
-        protected override string GetAllOrderBy<TProperty>(string orderBy, System.Linq.Expressions.Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
+        protected override string GetAllOrderBy<TProperty>(string orderBy, Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
         {
             return base.GetAllOrderBy(orderBy, expression, "\"", "\"");
         }
-        protected override string GetAllOrderByDescending<TProperty>(string orderBy, System.Linq.Expressions.Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
+        protected override string GetAllOrderByDescending<TProperty>(string orderBy, Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
         {
             return base.GetAllOrderByDescending(orderBy, expression, "\"", "\"");
         }
