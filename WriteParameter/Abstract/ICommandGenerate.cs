@@ -1,6 +1,6 @@
 ﻿namespace WriteParameter.Abstract
 {
-    public interface IQueryCommandGenerate
+    public interface ICommandGenerate
     {
         string GenerateInsertQuery();
         string GenerateUpdateQuery();
