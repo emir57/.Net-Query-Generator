@@ -254,7 +254,7 @@ namespace WriteParameter
             return query;
         }
 
-        protected virtual string getIdColumn()
+        protected virtual string getIdColumn(string? previousName = "", string? lastName = "")
         {
             if (_idColumn != null)
                 return _idColumn.Name;
@@ -274,10 +274,10 @@ namespace WriteParameter
             if (idAttributeCount > 1)
                 throw new MoreThanOneIdColumnException();
 
-            _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
+            _idColumn = _idColumn == null ? properties.FirstOrDefault(p => p.Name.ToUpper() == "ID") : _idColumn;
 
             checkIdColumn();
-            return _idColumn.Name;
+            return $"{previousName}{_idColumn.Name}{lastName}";
         }
 
         protected virtual PropertyInfo GetProperty<TProperty>(Expression<Func<TEntity, TProperty>> expression)

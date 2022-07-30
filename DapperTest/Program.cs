@@ -9,7 +9,7 @@ using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=local
     string query = new NpgQueryGenerate<Country>()
         .SelectSchema("dbo")
         .SelectTable("country")
-        .GenerateGetAllOrderBy(x => x.CountryName);
+        .GenerateGetByIdQuery(1);
 
     #region Add or Update
     //if (conn.State != System.Data.ConnectionState.Open)
