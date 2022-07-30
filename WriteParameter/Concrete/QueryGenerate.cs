@@ -88,8 +88,8 @@ namespace WriteParameter
         {
             checkTable();
             checkSchema();
-            string idPropertyName = getIdColumn();
-            return String.Format(_cultureInfo, $"delete from {_schema}.{_tableName} where {idPropertyName}=@{idPropertyName}").Replace("ı", "i");
+            string idPropertyName = getIdColumn().Replace("\"", "");
+            return String.Format(_cultureInfo, $"delete from {_schema}.{_tableName} where \"{idPropertyName}\"=@{idPropertyName}").Replace("ı", "i");
         }
     }
 
