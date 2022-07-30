@@ -8,9 +8,7 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     string query = new QueryGenerate<Country>()
         .SelectSchema("dbo")
         .SelectTable("countries")
-        //.SelectIdColumn(x => x.CountryId)
-        .OrderByDescending(x => x.CountryName)
-        .GenerateGetByIdQuery();
+        .GenerateGetAllOrderBy(x => x.CountryName);
 
     #region Add or Update
     //if (conn.State != System.Data.ConnectionState.Open)
@@ -23,22 +21,22 @@ using (var conn = new SqlConnection("Server=DESKTOP-HVLQH67\\SQLEXPRESS;Database
     #endregion
 
     #region GetAll
-    //var countries = await conn.QueryAsync<Country>(query);
-    //foreach (var country in countries)
-    //{
-    //    Console.WriteLine($"{country.CountryId} {country.CountryName} {country.CountryImageUrl}");
-    //}
+    var countries = await conn.QueryAsync<Country>(query);
+    foreach (var country in countries)
+    {
+        Console.WriteLine($"{country.CountryId} {country.CountryName} {country.CountryImageUrl}");
+    }
     #endregion
 
 
     #region FirstOrDefault
-    var entity = new Country { CountryId = 1 };
-    var getCountry = await conn.QueryFirstOrDefaultAsync<Country>(query, entity);
-    Console.WriteLine($"{getCountry?.CountryId} {getCountry?.CountryName} {getCountry?.CountryImageUrl}");
-    Console.WriteLine("-------");
-    var driverTeams = await conn.QueryAsync<DriverTeam>("select d.DriverName,t.Name as TeamName,d.DriverSurname from drivers d, teams t where d.TeamId = t.TeamId order by TeamName asc,DriverName asc");
-    foreach (var driverTeam in driverTeams)
-        Console.WriteLine($"{driverTeam.DriverName} {driverTeam.DriverSurname} -> {driverTeam.TeamName}");
+    //var entity = new Country { CountryId = 1 };
+    //var getCountry = await conn.QueryFirstOrDefaultAsync<Country>(query, entity);
+    //Console.WriteLine($"{getCountry?.CountryId} {getCountry?.CountryName} {getCountry?.CountryImageUrl}");
+    //Console.WriteLine("-------");
+    //var driverTeams = await conn.QueryAsync<DriverTeam>("select d.DriverName,t.Name as TeamName,d.DriverSurname from drivers d, teams t where d.TeamId = t.TeamId order by TeamName asc,DriverName asc");
+    //foreach (var driverTeam in driverTeams)
+    //    Console.WriteLine($"{driverTeam.DriverName} {driverTeam.DriverSurname} -> {driverTeam.TeamName}");
 
     #endregion
     await conn.CloseAsync();

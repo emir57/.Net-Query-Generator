@@ -12,8 +12,5 @@ namespace WriteParameter.Abstract
         IGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IGenerate<TEntity> SelectIdColumn<TProperty>(string idColumn);
-
-        IGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression);
-        IGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression);
     }
 }

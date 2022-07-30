@@ -10,5 +10,8 @@ namespace WriteParameter
         string GenerateGetByIdQuery(int id);
         string GenerateGetByIdQuery(string id);
 
+        string GenerateGetAllOrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression);
+        string GenerateGetAllOrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression);
+
     }
 }

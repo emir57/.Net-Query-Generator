@@ -7,107 +7,13 @@ using WriteParameter.Exceptions;
 
 namespace WriteParameter
 {
-    public class QueryGenerate<TEntity> : IGenerate<TEntity>
+    /// <summary>
+    /// Select Id Columns
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
-        protected List<PropertyInfo> _properties;
-        protected string _tableName;
-        protected string _schema;
-        protected PropertyInfo _idColumn;
-        protected string _orderBy;
-        protected CultureInfo _cultureInfo;
-
-        public QueryGenerate()
-        {
-            _properties = new List<PropertyInfo>();
-            _cultureInfo = new CultureInfo("en-US");
-        }
-        public QueryGenerate(string tableName) : this()
-        {
-            _tableName = tableName;
-        }
-        public QueryGenerate(IEnumerable<PropertyInfo> properties)
-        {
-            _properties = properties.ToList();
-        }
-        public QueryGenerate(PropertyInfo[] properties)
-        {
-            _properties = properties.ToList();
-        }
-
-
-        public virtual string GenerateInsertQuery()
-        {
-            checkTable();
-            checkSchema();
-            return String.Format(_cultureInfo, $"insert into {_schema}.{_tableName} {insertIntoWriteParameters()}").Replace("ı", "i");
-        }
-
-        public virtual string GenerateUpdateQuery()
-        {
-            checkTable();
-            checkSchema();
-            return String.Format(_cultureInfo, $"update {_schema}.{_tableName} {updateWriteParameters()}").Replace("ı", "i");
-        }
-        public virtual string GenerateDeleteQuery()
-        {
-            checkTable();
-            checkSchema();
-            string idPropertyName = getIdColumn();
-            return String.Format(_cultureInfo, $"delete from {_schema}.{_tableName} where {idPropertyName}=@{idPropertyName}").Replace("ı", "i");
-        }
-        public virtual string GenerateGetAllQuery()
-        {
-            checkTable();
-            checkSchema();
-            string parameters = getParametersWithId();
-            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {_orderBy}");
-            return query;
-        }
-
-        public virtual IGenerate<TEntity> SelectTable(string tableName)
-        {
-            _tableName = tableName.ToLower();
-            return this;
-        }
-        public IGenerate<TEntity> SelectTable(string tableName, string schema)
-        {
-            _tableName = tableName.ToLower();
-            _schema = schema.ToLower();
-            return this;
-        }
-
-        public IGenerate<TEntity> SelectSchema(string schema)
-        {
-            _schema = schema.ToLower();
-            return this;
-        }
-
-        public virtual string GenerateGetByIdQuery()
-        {
-            return generateGetByIdQuery();
-        }
-        public virtual string GenerateGetByIdQuery(int id)
-        {
-            return generateGetByIdQuery(id);
-        }
-
-        public virtual string GenerateGetByIdQuery(string id)
-        {
-            return generateGetByIdQuery(id);
-        }
-
-        protected virtual string generateGetByIdQuery(object id = null)
-        {
-            checkTable();
-            checkSchema();
-            string parameters = getParametersWithId();
-            string idColumn = getIdColumn();
-            string whereQuery = id == null ? $"{idColumn}=@{idColumn}" : $"{idColumn}={id}";
-            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
-            return query;
-        }
-
         public virtual IGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
         {
             PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
@@ -130,7 +36,70 @@ namespace WriteParameter
                 _idColumn = selectedIdColumn;
             return this;
         }
+    }
 
+    /// <summary>
+    /// Select Tables
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+        where TEntity : class
+    {
+        public virtual IGenerate<TEntity> SelectTable(string tableName)
+        {
+            _tableName = tableName.ToLower();
+            return this;
+        }
+        public IGenerate<TEntity> SelectTable(string tableName, string schema)
+        {
+            _tableName = tableName.ToLower();
+            _schema = schema.ToLower();
+            return this;
+        }
+
+        public IGenerate<TEntity> SelectSchema(string schema)
+        {
+            _schema = schema.ToLower();
+            return this;
+        }
+    }
+
+    /// <summary>
+    /// Commands
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+        where TEntity : class
+    {
+        public virtual string GenerateInsertQuery()
+        {
+            checkTable();
+            checkSchema();
+            return String.Format(_cultureInfo, $"insert into {_schema}.{_tableName} {insertIntoWriteParameters()}").Replace("ı", "i");
+        }
+
+        public virtual string GenerateUpdateQuery()
+        {
+            checkTable();
+            checkSchema();
+            return String.Format(_cultureInfo, $"update {_schema}.{_tableName} {updateWriteParameters()}").Replace("ı", "i");
+        }
+        public virtual string GenerateDeleteQuery()
+        {
+            checkTable();
+            checkSchema();
+            string idPropertyName = getIdColumn();
+            return String.Format(_cultureInfo, $"delete from {_schema}.{_tableName} where {idPropertyName}=@{idPropertyName}").Replace("ı", "i");
+        }
+    }
+
+    /// <summary>
+    /// Check functions
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+        where TEntity : class
+    {
         protected virtual void checkTable()
         {
             if (_tableName is null)
@@ -147,33 +116,15 @@ namespace WriteParameter
             if (_idColumn is null)
                 throw new NotFoundIdColumnException();
         }
+    }
 
-        protected virtual string getIdColumn()
-        {
-            if (_idColumn != null)
-                return _idColumn.Name;
-
-            var properties = typeof(TEntity).GetProperties().ToList();
-
-            byte idAttributeCount = 0;
-            foreach (var property in properties)
-            {
-                var attribute = property.GetCustomAttributes(true).FirstOrDefault(a => a.GetType() == typeof(IdColumnAttribute));
-                if (attribute is IdColumnAttribute)
-                {
-                    idAttributeCount++;
-                    _idColumn = property;
-                }
-            }
-            if (idAttributeCount > 1)
-                throw new MoreThanOneIdColumnException();
-
-            _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
-
-            checkIdColumn();
-            return _idColumn.Name;
-        }
-
+    /// <summary>
+    /// Parameters
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+        where TEntity : class
+    {
         protected virtual string updateWriteParameters()
         {
             var properties = _properties.Count == 0 ? typeof(TEntity).GetProperties().ToList() : _properties;
@@ -207,19 +158,117 @@ namespace WriteParameter
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
+    }
 
-        public virtual IGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+    /// <summary>
+    /// Base class and query functions
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+        where TEntity : class
+    {
+        protected List<PropertyInfo> _properties;
+        protected string _tableName;
+        protected string _schema;
+        protected PropertyInfo _idColumn;
+        protected string _orderBy;
+        protected CultureInfo _cultureInfo;
+
+        public QueryGenerate()
+        {
+            _properties = new List<PropertyInfo>();
+            _cultureInfo = new CultureInfo("en-US");
+        }
+        public QueryGenerate(string tableName) : this()
+        {
+            _tableName = tableName;
+        }
+        public QueryGenerate(IEnumerable<PropertyInfo> properties)
+        {
+            _properties = properties.ToList();
+        }
+        public QueryGenerate(PropertyInfo[] properties)
+        {
+            _properties = properties.ToList();
+        }
+
+        public virtual string GenerateGetAllQuery()
+        {
+            return getAllQuery();
+        }
+
+        public virtual string GenerateGetByIdQuery()
+        {
+            return generateGetByIdQuery();
+        }
+        public virtual string GenerateGetByIdQuery(int id)
+        {
+            return generateGetByIdQuery(id);
+        }
+
+        public virtual string GenerateGetByIdQuery(string id)
+        {
+            return generateGetByIdQuery(id);
+        }
+
+        public virtual string GenerateGetAllOrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             PropertyInfo propertyInfo = GetProperty(expression);
             _orderBy = $"order by {propertyInfo.Name}";
-            return this;
+            return getAllQuery(_orderBy);
         }
 
-        public virtual IGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        public virtual string GenerateGetAllOrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             PropertyInfo propertyInfo = GetProperty(expression);
             _orderBy = $"order by {propertyInfo.Name} desc";
-            return this;
+            return getAllQuery(_orderBy);
+        }
+
+        protected virtual string getAllQuery(string orderBy = "")
+        {
+            checkTable();
+            checkSchema();
+            string parameters = getParametersWithId();
+            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {orderBy}");
+            return query;
+        }
+
+        protected virtual string generateGetByIdQuery(object id = null)
+        {
+            checkTable();
+            checkSchema();
+            string parameters = getParametersWithId();
+            string idColumn = getIdColumn();
+            string whereQuery = id == null ? $"{idColumn}=@{idColumn}" : $"{idColumn}={id}";
+            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
+            return query;
+        }
+
+        protected virtual string getIdColumn()
+        {
+            if (_idColumn != null)
+                return _idColumn.Name;
+
+            var properties = typeof(TEntity).GetProperties().ToList();
+
+            byte idAttributeCount = 0;
+            foreach (var property in properties)
+            {
+                var attribute = property.GetCustomAttributes(true).FirstOrDefault(a => a.GetType() == typeof(IdColumnAttribute));
+                if (attribute is IdColumnAttribute)
+                {
+                    idAttributeCount++;
+                    _idColumn = property;
+                }
+            }
+            if (idAttributeCount > 1)
+                throw new MoreThanOneIdColumnException();
+
+            _idColumn = properties.FirstOrDefault(p => p.Name.ToUpper() == "ID");
+
+            checkIdColumn();
+            return _idColumn.Name;
         }
 
         protected virtual PropertyInfo GetProperty<TProperty>(Expression<Func<TEntity, TProperty>> expression)
@@ -228,4 +277,5 @@ namespace WriteParameter
             return propertyInfo;
         }
     }
+
 }
