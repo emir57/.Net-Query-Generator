@@ -1,12 +1,13 @@
 ﻿using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
+using WriteParameter.Abstract;
 using WriteParameter.Attributes;
 using WriteParameter.Exceptions;
 
 namespace WriteParameter
 {
-    public class QueryGenerate<TEntity> : IQueryGenerate<TEntity>
+    public class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
         protected List<PropertyInfo> _properties;
@@ -64,19 +65,19 @@ namespace WriteParameter
             return query;
         }
 
-        public virtual IQueryGenerate<TEntity> SelectTable(string tableName)
+        public virtual IGenerate<TEntity> SelectTable(string tableName)
         {
             _tableName = tableName.ToLower();
             return this;
         }
-        public IQueryGenerate<TEntity> SelectTable(string tableName, string schema)
+        public IGenerate<TEntity> SelectTable(string tableName, string schema)
         {
             _tableName = tableName.ToLower();
             _schema = schema.ToLower();
             return this;
         }
 
-        public IQueryGenerate<TEntity> SelectSchema(string schema)
+        public IGenerate<TEntity> SelectSchema(string schema)
         {
             _schema = schema.ToLower();
             return this;
@@ -107,14 +108,14 @@ namespace WriteParameter
             return query;
         }
 
-        public virtual IQueryGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
+        public virtual IGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
         {
             PropertyInfo propertyInfo = (predicate.Body as MemberExpression).Member as PropertyInfo;
             _properties.Add(propertyInfo);
             return this;
         }
 
-        public virtual IQueryGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        public virtual IGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             PropertyInfo selectedIdColumn = (expression.Body as MemberExpression).Member as PropertyInfo;
             if (selectedIdColumn != null)
@@ -122,7 +123,7 @@ namespace WriteParameter
             return this;
         }
 
-        public IQueryGenerate<TEntity> SelectIdColumn<TProperty>(string idColumn)
+        public IGenerate<TEntity> SelectIdColumn<TProperty>(string idColumn)
         {
             PropertyInfo selectedIdColumn = typeof(TEntity).GetProperties().SingleOrDefault(x => x.Name.ToUpper() == idColumn.ToUpper());
             if (selectedIdColumn != null)
@@ -207,14 +208,14 @@ namespace WriteParameter
             return parameters;
         }
 
-        public virtual IQueryGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        public virtual IGenerate<TEntity> OrderBy<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             PropertyInfo propertyInfo = GetProperty(expression);
             _orderBy = $"order by {propertyInfo.Name}";
             return this;
         }
 
-        public virtual IQueryGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
+        public virtual IGenerate<TEntity> OrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
             PropertyInfo propertyInfo = GetProperty(expression);
             _orderBy = $"order by {propertyInfo.Name} desc";
