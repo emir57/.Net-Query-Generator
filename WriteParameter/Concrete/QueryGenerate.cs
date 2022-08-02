@@ -47,12 +47,12 @@ namespace WriteParameter
     {
         public virtual IGenerate<TEntity> SelectTable(string tableName)
         {
-            _tableName = tableName.ToLower();
+            _tableName = tableName;
             return this;
         }
         public IGenerate<TEntity> SelectTable(string tableName, string schema)
         {
-            _tableName = tableName.ToLower();
+            _tableName = tableName;
             _schema = schema.ToLower();
             return this;
         }
