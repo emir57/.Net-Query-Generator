@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using WriteParameter.Abstract;
 
 namespace WriteParameter
 {
@@ -45,6 +46,10 @@ namespace WriteParameter
         protected override string updateWriteParameters(string? previousName = "", string? lastName = "")
         {
             return base.updateWriteParameters("\"", "\"");
+        }
+        public override IGenerate<TEntity> SelectTable(string tableName)
+        {
+            return base.SelectTable($"\"{tableName}\"");
         }
     }
 }
