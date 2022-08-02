@@ -174,6 +174,11 @@ namespace WriteParameter
             foreach (PropertyInfo property in properties)
             {
                 var ignoreColumnAttribute = property.GetCustomAttribute(typeof(IgnoreColumnAttribute));
+                var idColumnAttribute = property.GetCustomAttribute(typeof(IdColumnAttribute));
+
+                if (ignoreColumnAttribute != null && idColumnAttribute != null)
+                    throw new CannotBeUseSameTimeIdColumnAndIgnoreColumnException();
+
                 if (ignoreColumnAttribute == null)
                     returnProperties.Add(property);
             }
