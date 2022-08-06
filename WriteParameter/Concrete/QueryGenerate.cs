@@ -195,7 +195,7 @@ namespace WriteParameter
     {
         protected List<PropertyInfo> _properties;
         protected string _tableName;
-        protected string _schema;
+        protected string _schema = "dbo";
         protected PropertyInfo _idColumn;
         protected string _orderBy;
         protected CultureInfo _cultureInfo;
@@ -205,6 +205,7 @@ namespace WriteParameter
 
         public QueryGenerate()
         {
+            _tableName = typeof(TEntity).Name;
             _properties = new List<PropertyInfo>();
             _cultureInfo = new CultureInfo("en-US");
         }
