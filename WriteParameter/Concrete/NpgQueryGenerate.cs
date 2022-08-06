@@ -51,5 +51,9 @@ namespace WriteParameter
         {
             return base.SelectTable($"\"{tableName}\"");
         }
+        protected override void getPagination(string pagination = "")
+        {
+            base.getPagination($"limit {_limit} offset {_offset}");
+        }
     }
 }

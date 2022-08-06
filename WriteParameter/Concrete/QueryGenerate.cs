@@ -267,15 +267,18 @@ namespace WriteParameter
         {
             checkTable();
             checkSchema();
+            getPagination();
             orderBy = orderBy == "" ? $"order by {getIdColumn()}" : orderBy;
             string parameters = getParametersWithId();
             string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {orderBy} {_pagination}");
             return query;
         }
 
-        protected virtual void getPagination(string pagination)
+        protected virtual void getPagination(string pagination = "")
         {
-            _pagination = pagination;
+            if (pagination is not null)
+                _pagination = pagination;
+            _pagination = $"offset {_offset} rows fetch next {_limit} rows only";
         }
 
         public virtual IGenerate<TEntity> SetLimit(int limit)
@@ -285,7 +288,7 @@ namespace WriteParameter
         }
         public virtual IGenerate<TEntity> SetOffset(int offset)
         {
-            _offset = _offset;
+            _offset = offset;
             return this;
         }
 
