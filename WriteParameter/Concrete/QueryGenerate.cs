@@ -11,7 +11,7 @@ namespace WriteParameter
     /// Select Id Columns
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+    public abstract partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
         public virtual IGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> predicate)
@@ -42,7 +42,7 @@ namespace WriteParameter
     /// Select Tables
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+    public abstract partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
         public virtual IGenerate<TEntity> SelectTable(string tableName)
@@ -68,7 +68,7 @@ namespace WriteParameter
     /// Commands
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+    public abstract partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
         public virtual string GenerateInsertQuery()
@@ -97,7 +97,7 @@ namespace WriteParameter
     /// Check functions
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+    public abstract partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
         protected virtual void checkTable()
@@ -122,7 +122,7 @@ namespace WriteParameter
     /// Parameters
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+    public abstract partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
         protected virtual string updateWriteParameters(string? previousName = "", string? lastName = "")
@@ -190,7 +190,7 @@ namespace WriteParameter
     /// Base class and query functions
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public partial class QueryGenerate<TEntity> : IGenerate<TEntity>
+    public abstract partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
         protected List<PropertyInfo> _properties;
@@ -199,6 +199,9 @@ namespace WriteParameter
         protected PropertyInfo _idColumn;
         protected string _orderBy;
         protected CultureInfo _cultureInfo;
+        protected string _pagination;
+        protected int _limit = 10;
+        protected int _offset = 0;
 
         public QueryGenerate()
         {
@@ -264,9 +267,26 @@ namespace WriteParameter
         {
             checkTable();
             checkSchema();
+            orderBy = orderBy == "" ? $"order by {getIdColumn()}" : orderBy;
             string parameters = getParametersWithId();
-            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {orderBy}");
+            string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {orderBy} {_pagination}");
             return query;
+        }
+
+        protected virtual void getPagination(string pagination)
+        {
+            _pagination = pagination;
+        }
+
+        public virtual IGenerate<TEntity> SetLimit(int limit)
+        {
+            _limit = limit;
+            return this;
+        }
+        public virtual IGenerate<TEntity> SetOffset(int offset)
+        {
+            _offset = _offset;
+            return this;
         }
 
         protected virtual string generateGetByIdQuery(object id = null)
