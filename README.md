@@ -34,3 +34,12 @@ string query = new NpgQueryGenerate<Country>()
 ```diff
 +Çıktı: "insert into dbo.Country (\"CountryName\",\"Continent\") values (@CountryName,@Continent)"
 ```
+
+Dapper ile kullanımı
+
+```csharp
+Country country = new() { CountryName = "TURKEY", Continent = "ASIA", Currency = "TRY" };
+int row = await conn.ExecuteAsync(
+    query,
+    country);
+```
