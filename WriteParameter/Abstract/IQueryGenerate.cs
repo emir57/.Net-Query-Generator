@@ -5,7 +5,7 @@ namespace WriteParameter
     public interface IQueryGenerate<TEntity>
         where TEntity : class
     {
-        string GenerateGetAllQuery(bool pagination = false);
+        string GenerateGetAllQuery();
         string GenerateGetByIdQuery();
         string GenerateGetByIdQuery(int id);
         string GenerateGetByIdQuery(string id);

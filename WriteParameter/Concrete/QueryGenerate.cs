@@ -212,9 +212,8 @@ namespace WriteParameter
         protected string _orderBy;
         protected CultureInfo _cultureInfo;
         protected string _pagination;
-        protected int _limit = 10;
+        protected int _limit = 0;
         protected int _offset = 0;
-        protected bool _paginationIsEnabled = false;
 
         public QueryGenerate()
         {
@@ -235,9 +234,8 @@ namespace WriteParameter
             _properties = properties.ToList();
         }
 
-        public virtual string GenerateGetAllQuery(bool pagination = false)
+        public virtual string GenerateGetAllQuery()
         {
-            _paginationIsEnabled = pagination;
             return getAllQuery();
         }
 
@@ -296,17 +294,14 @@ namespace WriteParameter
 
         protected virtual void getPagination(string pagination = "")
         {
-            if (_paginationIsEnabled == false)
-            {
-                _pagination = "";
-                return;
-            }
+            if (_offset == 0) return;
+
             if (pagination is not null)
             {
                 _pagination = pagination;
                 return;
             }
-            _pagination = $"offset {_offset} rows fetch next {_limit} rows only";
+            _pagination = "";
         }
 
         public virtual IGenerate<TEntity> SetLimit(int limit)

@@ -16,5 +16,10 @@ namespace WriteParameter
         public MsSqlQueryGenerate(IEnumerable<PropertyInfo> properties) : base(properties)
         {
         }
+
+        protected override void getPagination(string pagination = "")
+        {
+            base.getPagination($"offset {_offset} rows fetch next {_limit} rows only");
+        }
     }
 }
