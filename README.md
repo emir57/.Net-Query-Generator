@@ -1,5 +1,11 @@
 # WriteParameter
-Kodlar ile beraber sql cümlecikleri yazmak yorucu veya can sıkıcı syntax hatalarına sebep olabilir. Bunları önlemek için geliştirilmiş bir araçtır.
+Kodlar ile beraber sql cümlecikleri yazmak yorucu veya can sıkıcı syntax hatalarına sebep olabilir. Bunları önlemek için geliştirilmiş bir araçtır.<br>
+<br>
+Desteklenen VeriTabanları:
+<ul>
+<li>MsSql</li>
+<li>PostgreSql</li>
+</ul>
 <h2>Kullanımı</h2>
 İlk öncelikle tablo modeline ihtiyacımız var
 
@@ -14,6 +20,8 @@ Kodlar ile beraber sql cümlecikleri yazmak yorucu veya can sıkıcı syntax hat
         public string Currency { get; set; }
     }
 ```
+<hr>
+<h3>Insert</h3>
 MsSql için Insert sorgusu oluşturmak
 
 ```csharp
@@ -43,3 +51,4 @@ int row = await conn.ExecuteAsync(
     query,
     country);
 ```
+<hr>
