@@ -47,9 +47,9 @@ namespace WriteParameter
         {
             return base.updateWriteParameters("\"", "\"");
         }
-        public override IGenerate<TEntity> SelectTable(string tableName)
+        public override IGenerate<TEntity> TableName(string tableName)
         {
-            return base.SelectTable($"\"{tableName}\"");
+            return base.TableName($"\"{tableName}\"");
         }
         protected override void getPagination(string pagination = "")
         {

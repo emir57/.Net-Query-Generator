@@ -6,9 +6,9 @@ namespace WriteParameter.Abstract
         ICommandGenerate, IQueryGenerate<TEntity>
         where TEntity : class
     {
-        IGenerate<TEntity> SelectTable(string tableName);
-        IGenerate<TEntity> SelectTable(string tableName, string schema);
-        IGenerate<TEntity> SelectSchema(string schema);
+        IGenerate<TEntity> TableName(string tableName);
+        IGenerate<TEntity> TableName(string tableName, string schema);
+        IGenerate<TEntity> SchemaName(string schema);
         IGenerate<TEntity> SelectColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IGenerate<TEntity> SelectIdColumn<TProperty>(Expression<Func<TEntity, TProperty>> expression);
         IGenerate<TEntity> SelectIdColumn<TProperty>(string idColumn);

@@ -45,19 +45,19 @@ namespace WriteParameter
     public abstract partial class QueryGenerate<TEntity> : IGenerate<TEntity>
         where TEntity : class
     {
-        public virtual IGenerate<TEntity> SelectTable(string tableName)
+        public virtual IGenerate<TEntity> TableName(string tableName)
         {
             _tableName = tableName;
             return this;
         }
-        public IGenerate<TEntity> SelectTable(string tableName, string schema)
+        public IGenerate<TEntity> TableName(string tableName, string schema)
         {
             _tableName = tableName;
             _schema = schema.ToLower();
             return this;
         }
 
-        public IGenerate<TEntity> SelectSchema(string schema)
+        public IGenerate<TEntity> SchemaName(string schema)
         {
             _schema = schema.ToLower();
             return this;
