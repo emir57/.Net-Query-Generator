@@ -5,9 +5,8 @@ namespace DapperTest.Entities
     public class Country
     {
         [IdColumn]
-        [ColumnName("CountryIDD")]
         public int CountryId { get; set; }
-        [ColumnName("CountryNamee")]
+        [ColumnName("CountryName")]
         public string CountryName { get; set; }
         public string Continent { get; set; }
         [IgnoreColumn]
