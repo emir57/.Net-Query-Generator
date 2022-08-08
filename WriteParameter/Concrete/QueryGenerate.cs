@@ -140,6 +140,7 @@ namespace WriteParameter
         {
             string columns = getParametersWithoutId();
             string valueColumns = getValueParametersWithoutId();
+
             return $"({columns}) values ({valueColumns})";
         }
 
@@ -147,6 +148,7 @@ namespace WriteParameter
         {
             List<PropertyInfo> properties = getProperties();
             string idPropertyName = getIdColumn();
+
             string parameters = String.Join(",", properties.Select(p => $"{previousName}{getPropertyName(p)}{lastName}" == idPropertyName ? "" : $"{previousName}{getPropertyName(p)}{lastName}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
@@ -155,6 +157,7 @@ namespace WriteParameter
         {
             List<PropertyInfo> properties = getProperties();
             string idPropertyName = getIdColumn();
+
             string parameters = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"@{p.Name}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
@@ -162,6 +165,7 @@ namespace WriteParameter
         protected virtual string getParametersWithId(string? previousName = "", string? lastName = "")
         {
             List<PropertyInfo> properties = getProperties();
+
             string parameters = String.Join(",", properties.Select(p => $"{previousName}{getPropertyName(p)}{lastName}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
@@ -187,6 +191,7 @@ namespace WriteParameter
         private string getPropertyName(PropertyInfo propertyInfo)
         {
             var columnNameAttribute = propertyInfo.GetCustomAttribute<ColumnNameAttribute>();
+
             if (columnNameAttribute != null)
                 return typeof(ColumnNameAttribute).GetField("ColumnName").GetValue(columnNameAttribute).ToString();
             return propertyInfo.Name;
@@ -261,12 +266,14 @@ namespace WriteParameter
         protected virtual string GetAllOrderBy<TProperty>(string orderBy, Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
         {
             PropertyInfo propertyInfo = GetProperty(expression);
+
             _orderBy = $"order by {previousName}{propertyInfo.Name}{lastName}";
             return getAllQuery(_orderBy);
         }
         protected virtual string GetAllOrderByDescending<TProperty>(string orderBy, Expression<Func<TEntity, TProperty>> expression, string? previousName = "", string? lastName = "")
         {
             PropertyInfo propertyInfo = GetProperty(expression);
+
             _orderBy = $"order by {previousName}{propertyInfo.Name}{lastName} desc";
             return getAllQuery(_orderBy);
         }
@@ -276,8 +283,11 @@ namespace WriteParameter
             checkTable();
             checkSchema();
             getPagination();
+
             orderBy = orderBy == "" ? $"order by {getIdColumn()}" : orderBy;
+
             string parameters = getParametersWithId();
+
             string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {orderBy} {_pagination}");
             return query;
         }
@@ -286,6 +296,7 @@ namespace WriteParameter
         {
             if (pagination is not null)
                 _pagination = pagination;
+
             _pagination = $"offset {_offset} rows fetch next {_limit} rows only";
         }
 
@@ -305,8 +316,10 @@ namespace WriteParameter
             checkTable();
             checkSchema();
             string parameters = getParametersWithId();
+
             string idColumn = getIdColumn();
             string idColumnValue = getIdColumn(isValue: true);
+
             string whereQuery = id == null ? $"{idColumn}=@{idColumnValue}" : $"{idColumn}={id}";
             string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
             return query;
