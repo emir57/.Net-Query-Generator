@@ -39,7 +39,7 @@ namespace WriteParameter
         {
             return base.GetAllOrderByDescending(orderBy, expression, "\"", "\"");
         }
-        protected override string getIdColumn(string? previousName = "", string? lastName = "")
+        protected override string getIdColumn(string? previousName = "", string? lastName = "", bool isValue = false)
         {
             return base.getIdColumn("\"", "\"");
         }

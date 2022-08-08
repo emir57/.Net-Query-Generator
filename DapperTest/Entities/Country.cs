@@ -5,6 +5,7 @@ namespace DapperTest.Entities
     public class Country
     {
         [IdColumn]
+        [ColumnName("CountryIDD")]
         public int CountryId { get; set; }
         [ColumnName("CountryNamee")]
         public string CountryName { get; set; }

@@ -306,12 +306,13 @@ namespace WriteParameter
             checkSchema();
             string parameters = getParametersWithId();
             string idColumn = getIdColumn();
-            string whereQuery = id == null ? $"{idColumn}=@{idColumn}" : $"{idColumn}={id}";
+            string idColumnValue = getIdColumn(isValue: true);
+            string whereQuery = id == null ? $"{idColumn}=@{idColumnValue}" : $"{idColumn}={id}";
             string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
             return query;
         }
 
-        protected virtual string getIdColumn(string? previousName = "", string? lastName = "")
+        protected virtual string getIdColumn(string? previousName = "", string? lastName = "", bool isValue = false)
         {
             if (_idColumn != null)
                 return _idColumn.Name;
@@ -334,7 +335,8 @@ namespace WriteParameter
             _idColumn = _idColumn == null ? properties.FirstOrDefault(p => p.Name.ToUpper() == "ID") : _idColumn;
 
             checkIdColumn();
-            return $"{previousName}{_idColumn.Name}{lastName}";
+            string idColumName = isValue ? _idColumn.Name : getPropertyName(_idColumn);
+            return $"{previousName}{idColumName}{lastName}";
         }
 
         protected virtual PropertyInfo GetProperty<TProperty>(Expression<Func<TEntity, TProperty>> expression)
