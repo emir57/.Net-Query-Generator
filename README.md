@@ -31,8 +31,6 @@ string query = new MsSqlQueryGenerate<Country>()
 ```diff
 +Çıktı: "insert into dbo.Country (CountryName,Continent) values (@CountryName,@Continent)"
 ```
-
-
 PostgreSql için Insert sorgusu oluşturmak
 
 ```csharp
@@ -47,6 +45,36 @@ Dapper ile kullanımı
 
 ```csharp
 Country country = new() { CountryName = "TURKEY", Continent = "ASIA", Currency = "TRY" };
+int row = await conn.ExecuteAsync(
+    query,
+    country);
+```
+<hr>
+
+<h3>Update</h3>
+MsSql için Update sorgusu oluşturmak
+
+```csharp
+string query = new MsSqlQueryGenerate<Country>()
+        .GenerateUpdateQuery();
+```
+```diff
++Çıktı: "update dbo.Country set CountryName=@CountryName,Continent=@Continent where CountryId=@CountryId"
+```
+PostgreSql için Update sorgusu oluşturmak
+
+```csharp
+string query = new NpgQueryGenerate<Country>()
+        .GenerateUpdateQuery();
+```
+```diff
++Çıktı: "update dbo.Country set \"CountryName\"=@CountryName,\"Continent\"=@Continent where \"CountryId\"=@CountryId"
+```
+
+Dapper ile kullanımı
+
+```csharp
+Country country = new() { CountryId = 1, CountryName = "TURKEY", Continent = "ASIA", Currency = "TRY" };
 int row = await conn.ExecuteAsync(
     query,
     country);
