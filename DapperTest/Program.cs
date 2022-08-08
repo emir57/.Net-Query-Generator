@@ -7,8 +7,10 @@ using WriteParameter;
 using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=localhost;Port=5432;Database=PATIKA;"))
 {
     var queryGenerator = new NpgQueryGenerate<Country>();
-    string query = new NpgQueryGenerate<Country>()
-        .GenerateGetByIdQuery();
+    queryGenerator.TableName("c");
+    string query = queryGenerator
+        .SetLimit(1).SetOffset(10)
+        .GenerateGetAllQuery();
     //.SelectSchema("dbo")
     //.SelectTable("country")
     //.SetLimit(2).SetOffset(2)
