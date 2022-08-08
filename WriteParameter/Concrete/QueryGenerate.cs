@@ -130,7 +130,7 @@ namespace WriteParameter
             List<PropertyInfo> properties = getProperties();
             string idPropertyName = getIdColumn().Replace("\"", "");
 
-            string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{previousName}{p.Name}{lastName}=@{p.Name}"));
+            string updateQuery = String.Join(",", properties.Select(p => p.Name == idPropertyName ? "" : $"{previousName}{getPropertyName(p)}{lastName}=@{p.Name}"));
 
             updateQuery = updateQuery.StartsWith(",") ? updateQuery.Substring(1) : updateQuery;
             updateQuery += String.Concat(" ", $"where {previousName}{idPropertyName}{lastName}=@{idPropertyName}");
@@ -147,7 +147,7 @@ namespace WriteParameter
         {
             List<PropertyInfo> properties = getProperties();
             string idPropertyName = getIdColumn();
-            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}{lastName}" == idPropertyName ? "" : $"{previousName}{p.Name}{lastName}"));
+            string parameters = String.Join(",", properties.Select(p => $"{previousName}{getPropertyName(p)}{lastName}" == idPropertyName ? "" : $"{previousName}{getPropertyName(p)}{lastName}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
@@ -162,7 +162,7 @@ namespace WriteParameter
         protected virtual string getParametersWithId(string? previousName = "", string? lastName = "")
         {
             List<PropertyInfo> properties = getProperties();
-            string parameters = String.Join(",", properties.Select(p => $"{previousName}{p.Name}{lastName}"));
+            string parameters = String.Join(",", properties.Select(p => $"{previousName}{getPropertyName(p)}{lastName}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
@@ -183,6 +183,13 @@ namespace WriteParameter
                     returnProperties.Add(property);
             }
             return returnProperties;
+        }
+        private string getPropertyName(PropertyInfo propertyInfo)
+        {
+            var columnNameAttribute = propertyInfo.GetCustomAttribute<ColumnNameAttribute>();
+            if (columnNameAttribute != null)
+                return typeof(ColumnNameAttribute).GetField("ColumnName").GetValue(columnNameAttribute).ToString();
+            return propertyInfo.Name;
         }
     }
 
