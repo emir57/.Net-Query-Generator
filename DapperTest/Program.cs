@@ -7,7 +7,6 @@ using WriteParameter;
 using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=localhost;Port=5432;Database=PATIKA;"))
 {
     var queryGenerator = new NpgQueryGenerate<Country>();
-    queryGenerator.TableName("c");
     string query = queryGenerator
         .GenerateGetAllQuery();
     //.SelectSchema("dbo")
@@ -29,7 +28,7 @@ using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=local
     var countries = await conn.QueryAsync<Country>(query);
     foreach (var country in countries)
     {
-        Console.WriteLine($"{country.CountryId} {country.CountryName} {country.Continent}");
+        Console.WriteLine($"{country.CountryId} {country.CountryNamee} {country.Continent}");
     }
     #endregion
 

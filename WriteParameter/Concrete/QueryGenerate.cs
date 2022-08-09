@@ -166,7 +166,7 @@ namespace WriteParameter
         {
             List<PropertyInfo> properties = getProperties();
 
-            string parameters = String.Join(",", properties.Select(p => $"{previousName}{getPropertyName(p)}{lastName}"));
+            string parameters = String.Join(",", properties.Select(p => $"{previousName}{getPropertyName(p)}{lastName} as {p.Name}"));
             parameters = parameters.StartsWith(",") ? parameters.Substring(1) : parameters;
             return parameters;
         }
