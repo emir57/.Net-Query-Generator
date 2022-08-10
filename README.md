@@ -89,7 +89,7 @@ string query = new MsSqlQueryGenerate<Country>()
         .GenerateDeleteQuery();
 ```
 ```diff
-+Çıktı: "delete from dbo.Country where \"CountryId\"=@CountryId"
++Çıktı: "delete from dbo.Country where CountryId=@CountryId"
 ```
 PostgreSql için Delete sorgusu oluşturmak
 
