@@ -1,7 +1,7 @@
 # WriteParameter
 Kodlar ile beraber sql cümlecikleri yazmak yorucu veya can sıkıcı syntax hatalarına sebep olabilir. Bunları önlemek için geliştirilmiş bir araçtır.<br>
 <br>
-Desteklenen VeriTabanları:
+Desteklenen Veri tabanları:
 <ul>
 <li>MsSql</li>
 <li>PostgreSql</li>
@@ -80,3 +80,33 @@ int row = await conn.ExecuteAsync(
     country);
 ```
 <hr>
+
+<h3>Delete</h3>
+MsSql için Delete sorgusu oluşturmak
+
+```csharp
+string query = new MsSqlQueryGenerate<Country>()
+        .GenerateDeleteQuery();
+```
+```diff
++Çıktı: "delete from dbo.Country where \"CountryId\"=@CountryId"
+```
+PostgreSql için Delete sorgusu oluşturmak
+
+```csharp
+string query = new NpgQueryGenerate<Country>()
+        .GenerateDeleteQuery();
+```
+```diff
++Çıktı: "delete from dbo.Country where \"CountryId\"=@CountryId"
+```
+
+Dapper ile kullanımı
+
+```csharp
+Country country = new() { CountryId = 1 };
+int row = await conn.ExecuteAsync(
+    query,
+    country);
+```
+
