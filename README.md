@@ -29,7 +29,7 @@ string query = new MsSqlQueryGenerate<Country>()
         .GenerateInsertQuery();
 ```
 ```diff
-+Çıktı: "insert into dbo.Country (CountryName,Continent) values (@CountryName,@Continent)"
++Output: "insert into dbo.Country (CountryName,Continent) values (@CountryName,@Continent)"
 ```
 PostgreSql için Insert sorgusu oluşturmak
 
@@ -38,7 +38,7 @@ string query = new NpgQueryGenerate<Country>()
         .GenerateInsertQuery();
 ```
 ```diff
-+Çıktı: "insert into dbo.Country (\"CountryName\",\"Continent\") values (@CountryName,@Continent)"
++Output: "insert into dbo.Country (\"CountryName\",\"Continent\") values (@CountryName,@Continent)"
 ```
 
 Dapper ile kullanımı
@@ -59,7 +59,7 @@ string query = new MsSqlQueryGenerate<Country>()
         .GenerateUpdateQuery();
 ```
 ```diff
-+Çıktı: "update dbo.Country set CountryName=@CountryName,Continent=@Continent where CountryId=@CountryId"
++Output: "update dbo.Country set CountryName=@CountryName,Continent=@Continent where CountryId=@CountryId"
 ```
 PostgreSql için Update sorgusu oluşturmak
 
@@ -68,7 +68,7 @@ string query = new NpgQueryGenerate<Country>()
         .GenerateUpdateQuery();
 ```
 ```diff
-+Çıktı: "update dbo.Country set \"CountryName\"=@CountryName,\"Continent\"=@Continent where \"CountryId\"=@CountryId"
++Output: "update dbo.Country set \"CountryName\"=@CountryName,\"Continent\"=@Continent where \"CountryId\"=@CountryId"
 ```
 
 Dapper ile kullanımı
@@ -89,7 +89,7 @@ string query = new MsSqlQueryGenerate<Country>()
         .GenerateDeleteQuery();
 ```
 ```diff
-+Çıktı: "delete from dbo.Country where CountryId=@CountryId"
++Output: "delete from dbo.Country where CountryId=@CountryId"
 ```
 PostgreSql için Delete sorgusu oluşturmak
 
@@ -98,7 +98,7 @@ string query = new NpgQueryGenerate<Country>()
         .GenerateDeleteQuery();
 ```
 ```diff
-+Çıktı: "delete from dbo.Country where \"CountryId\"=@CountryId"
++Output: "delete from dbo.Country where \"CountryId\"=@CountryId"
 ```
 
 Dapper ile kullanımı
