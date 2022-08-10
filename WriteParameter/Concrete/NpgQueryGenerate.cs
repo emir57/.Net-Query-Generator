@@ -55,5 +55,9 @@ namespace WriteParameter
         {
             base.getPagination($"limit {_limit} offset {_offset}");
         }
+        protected override string generateDeleteQuery(string previousName = "", string lastName = "")
+        {
+            return base.generateDeleteQuery("\"", "\"");
+        }
     }
 }

@@ -6,9 +6,8 @@ using WriteParameter;
 
 using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=localhost;Port=5432;Database=PATIKA;"))
 {
-    var queryGenerator = new NpgQueryGenerate<Country>();
-    string query = queryGenerator
-        .GenerateGetAllQuery();
+    string query = new MsSqlQueryGenerate<Country>()
+        .GenerateDeleteQuery();
     //.SelectSchema("dbo")
     //.SelectTable("country")
     //.SetLimit(2).SetOffset(2)

@@ -86,10 +86,14 @@ namespace WriteParameter
         }
         public virtual string GenerateDeleteQuery()
         {
+            return generateDeleteQuery();
+        }
+        protected virtual string generateDeleteQuery(string previousName = "", string lastName = "")
+        {
             checkTable();
             checkSchema();
             string idPropertyName = getIdColumn().Replace("\"", "");
-            return String.Format(_cultureInfo, $"delete from {_schema}.{_tableName} where \"{idPropertyName}\"=@{idPropertyName}").Replace("ı", "i");
+            return String.Format(_cultureInfo, $"delete from {_schema}.{_tableName} where {previousName}{idPropertyName}{lastName}=@{idPropertyName}").Replace("ı", "i");
         }
     }
 
