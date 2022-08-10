@@ -3,6 +3,8 @@ using DapperTest.Entities;
 using Npgsql;
 using System.Data.SqlClient;
 using WriteParameter;
+using WriteParameter.MsSqlWriter;
+using WriteParameter.NpgWriter;
 
 using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=localhost;Port=5432;Database=PATIKA;"))
 {

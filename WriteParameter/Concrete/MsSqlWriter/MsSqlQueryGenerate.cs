@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace WriteParameter
+namespace WriteParameter.MsSqlWriter
 {
     public class MsSqlQueryGenerate<TEntity> : QueryGenerate<TEntity>
         where TEntity : class

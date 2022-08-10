@@ -2,7 +2,7 @@
 using System.Reflection;
 using WriteParameter.Abstract;
 
-namespace WriteParameter
+namespace WriteParameter.NpgWriter
 {
     public class NpgQueryGenerate<TEntity> : QueryGenerate<TEntity>
         where TEntity : class
