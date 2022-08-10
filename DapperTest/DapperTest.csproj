@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Entity\Entity.csproj" />
     <ProjectReference Include="..\WriteParameter\WriteParameter.csproj" />
   </ItemGroup>
 
