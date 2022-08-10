@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WriteParameter.Attributes;
+﻿using WriteParameter.Attributes;
 
-namespace WriteParameter.Test.MsSql.Insert
+namespace WriteParameter.Test.Entities.Insert
 {
     internal class InsertModel
     {

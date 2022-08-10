@@ -1,16 +1,11 @@
-﻿using DapperTest.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WriteParameter.MsSqlWriter;
+﻿using WriteParameter.MsSqlWriter;
+using WriteParameter.Test.Entities.Insert;
 
 namespace WriteParameter.Test.MsSql.Insert
 {
-    public class InsertTest
+    public class MsSqlInsertTest
     {
-        public InsertTest()
+        public MsSqlInsertTest()
         {
 
         }
