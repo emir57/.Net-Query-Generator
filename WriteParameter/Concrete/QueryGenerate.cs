@@ -293,7 +293,7 @@ namespace WriteParameter
             string parameters = getParametersWithId();
 
             string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} {orderBy} {_pagination}");
-            return query;
+            return query.Trim();
         }
 
         protected virtual void getPagination(string pagination = "")
@@ -330,7 +330,7 @@ namespace WriteParameter
 
             string whereQuery = id == null ? $"{idColumn}=@{idColumnValue}" : $"{idColumn}={id}";
             string query = String.Format(_cultureInfo, $"select {parameters} from {_schema}.{_tableName} where {whereQuery}");
-            return query;
+            return query.Trim();
         }
 
         protected virtual string getIdColumn(string? previousName = "", string? lastName = "", bool isValue = false)
