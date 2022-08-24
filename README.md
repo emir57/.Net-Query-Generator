@@ -109,4 +109,31 @@ int row = await conn.ExecuteAsync(
     query,
     country);
 ```
+<hr>
 
+<h3>Get All</h3>
+MsSql için Listeleme sorgusu oluşturmak
+
+```csharp
+string query = new MsSqlQueryGenerate<Country>()
+        .GenerateGetAllQuery();
+```
+```diff
++Output: "select CountryId as CountryId,CountryName as CountryName,Continent as Continent,Currency as Currency from dbo.Country order by CountryId"
+```
+PostgreSql için Listeleme sorgusu oluşturmak
+
+```csharp
+string query = new NpgQueryGenerate<Country>()
+        .GenerateGetAllQuery();
+```
+```diff
++Output: "select \"CountryId\" as CountryId,\"CountryName\" as CountryName,\"Continent\" as Continent,\"Currency\" as Currency from dbo.BaseModel order by \"CountryId\""
+```
+
+Dapper ile kullanımı
+
+```csharp
+var result = await conn.QueryAsync<Country>(query);
+```
+<hr>
