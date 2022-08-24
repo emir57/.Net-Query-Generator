@@ -137,3 +137,29 @@ Dapper ile kullanımı
 var result = await conn.QueryAsync<Country>(query);
 ```
 <hr>
+<h3>Get By Id</h3>
+MsSql için GetById sorgusu oluşturmak
+
+```csharp
+string query = new MsSqlQueryGenerate<Country>()
+        .GenerateGetByIdQuery(1);
+```
+```diff
++Output: "select CountryId as CountryId,CountryName as CountryName,Continent as Continent,Currency as Currency from dbo.Country where CountryId=1"
+```
+PostgreSql için GetById sorgusu oluşturmak
+
+```csharp
+string query = new NpgQueryGenerate<Country>()
+        .GenerateGetByIdQuery(1);
+```
+```diff
++Output: "select \"CountryId\" as CountryId,\"CountryName\" as CountryName,\"Continent\" as Continent,\"Currency\" as Currency from dbo.Country where \"CountryId\"=1"
+```
+
+Dapper ile kullanımı
+
+```csharp
+var result = await conn.QuerySingleOrDefaultAsync<Country>(query);
+```
+<hr>
