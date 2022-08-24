@@ -11,7 +11,7 @@ namespace WriteParameter.Test.MsSql.Query
         }
 
         [Fact]
-        public void MsSql_Get_list_query()
+        public void MsSql_get_list_query()
         {
             string query = new MsSqlQueryGenerate<BaseModel>()
                 .GenerateGetAllQuery();
