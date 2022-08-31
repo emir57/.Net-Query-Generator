@@ -29,5 +29,18 @@ namespace WriteParameter.Extensions
             string query = generator.GenerateInsertQuery();
             return query;
         }
+
+        public static string MsSqlUpdateQuery<T>(this T @object, string schema = "dbo", string tableName = null)
+            where T : class
+        {
+            MsSqlQueryGenerate<T> generator = new MsSqlQueryGenerate<T>();
+
+            if (tableName != null)
+                generator.TableName(tableName);
+            generator.SchemaName(schema);
+
+            string query = generator.GenerateUpdateQuery();
+            return query;
+        }
     }
 }
