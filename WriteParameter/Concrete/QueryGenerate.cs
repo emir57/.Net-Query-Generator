@@ -354,6 +354,7 @@ namespace WriteParameter
                 throw new MoreThanOneIdColumnException();
 
             _idColumn = _idColumn == null ? properties.FirstOrDefault(p => p.Name.ToUpper() == "ID") : _idColumn;
+            _idColumn = _idColumn == null ? properties.FirstOrDefault(p => p.Name.ToUpper() == $"{typeof(TEntity).Name}Id".ToUpper()) : _idColumn;
 
             checkIdColumn();
             string idColumName = isValue ? _idColumn.Name : getPropertyName(_idColumn);
