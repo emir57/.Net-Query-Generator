@@ -6,21 +6,6 @@ Supported Databases:
 <li>MsSql</li>
 <li>PostgreSql</li>
 </ul>
-<h2>Using</h2>
-Example Table Model
-
- ```csharp
-    public sealed class Country
-    {
-        [IdColumn]
-        public int CountryId { get; set; }
-        public string CountryName { get; set; }
-        public string Continent { get; set; }
-        [IgnoreColumn]
-        public string Currency { get; set; }
-    }
-```
-<hr>
 
 <h3>Attributes</h3>
 <h5>[IdColumn]<h5>
@@ -46,6 +31,24 @@ For Different Column Name
 ```
 
 <hr>
+
+<h2>Using</h2>
+Example Table Model
+
+ ```csharp
+    public sealed class Country
+    {
+        [IdColumn]
+        public int CountryId { get; set; }
+        public string CountryName { get; set; }
+        public string Continent { get; set; }
+        [IgnoreColumn]
+        public string Currency { get; set; }
+    }
+```
+<hr>
+
+
 <h3>Insert</h3>
 Insert Query For MsSql
 
