@@ -3,6 +3,7 @@ using DapperTest.Entities;
 using Npgsql;
 using System.Data.SqlClient;
 using WriteParameter;
+using WriteParameter.Extensions;
 using WriteParameter.MsSqlWriter;
 using WriteParameter.NpgWriter;
 
@@ -18,7 +19,8 @@ using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=local
     #region Add or Update
     //if (conn.State != System.Data.ConnectionState.Open)
     //    await conn.OpenAsync();
-    //var entity = new Country() { CountryId = 7, CountryName = "TURKEY 3", Continent = "ASIA", Currency = "TRY" };
+    var entity = new Country() { CountryId = 7, CountryName = "TURKEY 3", Continent = "ASIA", Currency = "TRY" };
+    string query2 = entity.MsSqlAddQuery();
     //int row = await conn.ExecuteAsync(
     //    query,
     //    entity);
@@ -29,7 +31,7 @@ using (var conn = new NpgsqlConnection("User ID=postgres;Password=123;Host=local
     var countries = await conn.QueryAsync<Country>(query);
     foreach (var country in countries)
     {
-        Console.WriteLine($"{country.CountryId} {country.CountryNamee} {country.Continent}");
+        Console.WriteLine($"{country.CountryId} {country.CountryName} {country.Continent}");
     }
     #endregion
 
