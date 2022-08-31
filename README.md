@@ -6,6 +6,11 @@ Supported Databases:
 <li>MsSql</li>
 <li>PostgreSql</li>
 </ul>
+<br>
+Features
+<ul>
+ <li>Find Automatic Id Column</li>
+</ul>
 
 <h3>Attributes</h3>
 <h5>[IdColumn]<h5>
