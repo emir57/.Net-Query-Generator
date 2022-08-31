@@ -68,5 +68,18 @@ namespace WriteParameter.Extensions
             string query = generator.GenerateDeleteQuery();
             return query;
         }
+
+        public static string NpgDeleteQuery<T>(this T @object, string schema = "dbo", string tableName = null)
+            where T : class
+        {
+            NpgQueryGenerate<T> generator = new NpgQueryGenerate<T>();
+
+            if (tableName != null)
+                generator.TableName(tableName);
+            generator.SchemaName(schema);
+
+            string query = generator.GenerateDeleteQuery();
+            return query;
+        }
     }
 }
