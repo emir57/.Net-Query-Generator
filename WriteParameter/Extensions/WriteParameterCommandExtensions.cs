@@ -42,5 +42,18 @@ namespace WriteParameter.Extensions
             string query = generator.GenerateUpdateQuery();
             return query;
         }
+
+        public static string NpgUpdateQuery<T>(this T @object, string schema = "dbo", string tableName = null)
+            where T : class
+        {
+            NpgQueryGenerate<T> generator = new NpgQueryGenerate<T>();
+
+            if (tableName != null)
+                generator.TableName(tableName);
+            generator.SchemaName(schema);
+
+            string query = generator.GenerateUpdateQuery();
+            return query;
+        }
     }
 }
