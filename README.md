@@ -10,7 +10,7 @@ Supported Databases:
 Example Table Model
 
  ```csharp
-    public class Country
+    public sealed class Country
     {
         [IdColumn]
         public int CountryId { get; set; }
@@ -20,6 +20,31 @@ Example Table Model
         public string Currency { get; set; }
     }
 ```
+<hr>
+
+<h3>Attributes</h3>
+<h5>[IdColumn]<h5>
+For Select Id Column
+
+ ```csharp
+   [IdColumn]
+   public int CountryId { get; set; }
+```
+<h5>[IgnoreColumn]<h5>
+For Ignore Column
+
+ ```csharp
+   [IgnoreColumn]
+   public string Currency { get; set; }
+```
+<h5>[ColumnName("")]<h5>
+For Different Column Name
+
+ ```csharp
+   [ColumnName("Name")]
+   public string CountryName { get; set; }
+```
+
 <hr>
 <h3>Insert</h3>
 Insert Query For MsSql
