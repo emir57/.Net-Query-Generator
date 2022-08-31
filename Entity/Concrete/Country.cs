@@ -2,11 +2,11 @@
 
 namespace DapperTest.Entities
 {
-    public class Country
+    public sealed class Country
     {
         [IdColumn]
         public int CountryId { get; set; }
-        [ColumnName("CountryName")]
+        [ColumnName("Name")]
         public string CountryName { get; set; }
         public string Continent { get; set; }
         [IgnoreColumn]
