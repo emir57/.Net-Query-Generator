@@ -1,13 +1,13 @@
 # WriteParameter
-Kodlar ile beraber sql cümlecikleri yazmak yorucu veya can sıkıcı syntax hatalarına sebep olabilir. Bunları önlemek için geliştirilmiş bir araçtır.<br>
+Query Generator Tool<br>
 <br>
-Desteklenen Veri tabanları:
+Supported Databases:
 <ul>
 <li>MsSql</li>
 <li>PostgreSql</li>
 </ul>
-<h2>Kullanımı</h2>
-İlk öncelikle tablo modeline ihtiyacımız var
+<h2>Using</h2>
+Example Table Model
 
  ```csharp
     public class Country
@@ -22,7 +22,7 @@ Desteklenen Veri tabanları:
 ```
 <hr>
 <h3>Insert</h3>
-MsSql için Insert sorgusu oluşturmak
+Insert Query For MsSql
 
 ```csharp
 string query = new MsSqlQueryGenerate<Country>()
@@ -31,7 +31,7 @@ string query = new MsSqlQueryGenerate<Country>()
 ```diff
 +Output: "insert into dbo.Country (CountryName,Continent) values (@CountryName,@Continent)"
 ```
-PostgreSql için Insert sorgusu oluşturmak
+Insert Query For PostgreSql
 
 ```csharp
 string query = new NpgQueryGenerate<Country>()
@@ -41,7 +41,7 @@ string query = new NpgQueryGenerate<Country>()
 +Output: "insert into dbo.Country (\"CountryName\",\"Continent\") values (@CountryName,@Continent)"
 ```
 
-Dapper ile kullanımı
+Using With Dapper
 
 ```csharp
 Country country = new() { CountryName = "TURKEY", Continent = "ASIA", Currency = "TRY" };
@@ -52,7 +52,7 @@ int row = await conn.ExecuteAsync(
 <hr>
 
 <h3>Update</h3>
-MsSql için Update sorgusu oluşturmak
+Update Query For MsSql
 
 ```csharp
 string query = new MsSqlQueryGenerate<Country>()
@@ -61,7 +61,7 @@ string query = new MsSqlQueryGenerate<Country>()
 ```diff
 +Output: "update dbo.Country set CountryName=@CountryName,Continent=@Continent where CountryId=@CountryId"
 ```
-PostgreSql için Update sorgusu oluşturmak
+Update Query For PostgreSql
 
 ```csharp
 string query = new NpgQueryGenerate<Country>()
@@ -71,7 +71,7 @@ string query = new NpgQueryGenerate<Country>()
 +Output: "update dbo.Country set \"CountryName\"=@CountryName,\"Continent\"=@Continent where \"CountryId\"=@CountryId"
 ```
 
-Dapper ile kullanımı
+Using With Dapper
 
 ```csharp
 Country country = new() { CountryId = 1, CountryName = "TURKEY", Continent = "ASIA", Currency = "TRY" };
@@ -82,7 +82,7 @@ int row = await conn.ExecuteAsync(
 <hr>
 
 <h3>Delete</h3>
-MsSql için Delete sorgusu oluşturmak
+Delete Query For MsSql
 
 ```csharp
 string query = new MsSqlQueryGenerate<Country>()
@@ -91,7 +91,7 @@ string query = new MsSqlQueryGenerate<Country>()
 ```diff
 +Output: "delete from dbo.Country where CountryId=@CountryId"
 ```
-PostgreSql için Delete sorgusu oluşturmak
+Delete Query For PostgreSql
 
 ```csharp
 string query = new NpgQueryGenerate<Country>()
@@ -101,7 +101,7 @@ string query = new NpgQueryGenerate<Country>()
 +Output: "delete from dbo.Country where \"CountryId\"=@CountryId"
 ```
 
-Dapper ile kullanımı
+Using With Dapper
 
 ```csharp
 Country country = new() { CountryId = 1 };
@@ -112,8 +112,7 @@ int row = await conn.ExecuteAsync(
 <hr>
 
 <h3>Get All</h3>
-MsSql için Listeleme sorgusu oluşturmak
-
+Select Query For MsSql
 ```csharp
 string query = new MsSqlQueryGenerate<Country>()
         .GenerateGetAllQuery();
@@ -121,7 +120,7 @@ string query = new MsSqlQueryGenerate<Country>()
 ```diff
 +Output: "select CountryId as CountryId,CountryName as CountryName,Continent as Continent,Currency as Currency from dbo.Country order by CountryId"
 ```
-PostgreSql için Listeleme sorgusu oluşturmak
+Select Query For PostgreSql
 
 ```csharp
 string query = new NpgQueryGenerate<Country>()
@@ -131,14 +130,14 @@ string query = new NpgQueryGenerate<Country>()
 +Output: "select \"CountryId\" as CountryId,\"CountryName\" as CountryName,\"Continent\" as Continent,\"Currency\" as Currency from dbo.BaseModel order by \"CountryId\""
 ```
 
-Dapper ile kullanımı
+Using With Dapper
 
 ```csharp
 var result = await conn.QueryAsync<Country>(query);
 ```
 <hr>
 <h3>Get By Id</h3>
-MsSql için GetById sorgusu oluşturmak
+Select Where Query For MsSql
 
 ```csharp
 string query = new MsSqlQueryGenerate<Country>()
@@ -147,7 +146,7 @@ string query = new MsSqlQueryGenerate<Country>()
 ```diff
 +Output: "select CountryId as CountryId,CountryName as CountryName,Continent as Continent,Currency as Currency from dbo.Country where CountryId=1"
 ```
-PostgreSql için GetById sorgusu oluşturmak
+Select Where Query For PostgreSql
 
 ```csharp
 string query = new NpgQueryGenerate<Country>()
@@ -157,7 +156,7 @@ string query = new NpgQueryGenerate<Country>()
 +Output: "select \"CountryId\" as CountryId,\"CountryName\" as CountryName,\"Continent\" as Continent,\"Currency\" as Currency from dbo.Country where \"CountryId\"=1"
 ```
 
-Dapper ile kullanımı
+Using With Dapper
 
 ```csharp
 var result = await conn.QuerySingleOrDefaultAsync<Country>(query);
