@@ -160,6 +160,7 @@ int row = await conn.ExecuteAsync(
 
 <h3>Get All</h3>
 Select Query For MsSql
+ 
 ```csharp
 string query = new MsSqlQueryGenerate<Country>()
         .GenerateGetAllQuery();
