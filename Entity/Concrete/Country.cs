@@ -10,6 +10,8 @@ public sealed class Country
     [ColumnName("Name")]
     public string CountryName { get; set; }
     public string Continent { get; set; }
-    [IgnoreColumn]
     public string Currency { get; set; }
+    [IgnoreColumn]
+    public string CountryNameAndContinent
+        => String.Format("{0} - {1}", CountryName, Continent);
 }
