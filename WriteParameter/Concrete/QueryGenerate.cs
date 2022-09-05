@@ -221,7 +221,7 @@ namespace WriteParameter
 
         public QueryGenerate()
         {
-            _tableName = typeof(TEntity).Name;
+            setTableName();
             _properties = new List<PropertyInfo>();
             _cultureInfo = new CultureInfo("en-US");
         }
@@ -229,11 +229,19 @@ namespace WriteParameter
         {
             _tableName = tableName;
         }
-        public QueryGenerate(IEnumerable<PropertyInfo> properties)
+        public QueryGenerate(IEnumerable<PropertyInfo> properties) : this()
         {
             _properties = properties.ToList();
         }
-        public QueryGenerate(PropertyInfo[] properties)
+        public QueryGenerate(string tableName, IEnumerable<PropertyInfo> properties) : this(tableName)
+        {
+            _properties = properties.ToList();
+        }
+        public QueryGenerate(PropertyInfo[] properties) : this()
+        {
+            _properties = properties.ToList();
+        }
+        public QueryGenerate(string tableName, PropertyInfo[] properties) : this(tableName)
         {
             _properties = properties.ToList();
         }
@@ -365,6 +373,15 @@ namespace WriteParameter
         {
             PropertyInfo propertyInfo = (expression.Body as MemberExpression).Member as PropertyInfo;
             return propertyInfo;
+        }
+
+        protected virtual void setTableName()
+        {
+            TableNameAttribute? tableNameAttribute = typeof(TEntity).GetCustomAttribute<TableNameAttribute>();
+            if (tableNameAttribute == null)
+                _tableName = typeof(TEntity).Name;
+            else
+                _tableName = tableNameAttribute.TableName;
         }
     }
 
