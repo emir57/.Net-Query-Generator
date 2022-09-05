@@ -13,6 +13,19 @@ Features
 </ul>
 
 <h3>Attributes</h3>
+<h5>[TableName("")]<h5>
+For Table Name Column
+
+ ```csharp
+   [TableName("Countries")]
+    public sealed class Country
+    {
+        .
+        .
+        .
+    }
+```
+
 <h5>[IdColumn]<h5>
 For Select Id Column
 
@@ -41,6 +54,7 @@ For Different Column Name
 Example Table Model
 
  ```csharp
+    [TableName("Countries")]
     public sealed class Country
     {
         [IdColumn]
