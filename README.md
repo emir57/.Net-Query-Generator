@@ -54,7 +54,7 @@ For Different Column Name
 Example Table Model
 
  ```csharp
-    [TableName("Countries")]
+[TableName("Countries")]
 public sealed class Country
 {
     [IdColumn]
