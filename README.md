@@ -54,16 +54,19 @@ For Different Column Name
 Example Table Model
 
  ```csharp
-    [TableName("Countries")]
-    public sealed class Country
-    {
-        [IdColumn]
-        public int CountryId { get; set; }
-        public string CountryName { get; set; }
-        public string Continent { get; set; }
-        [IgnoreColumn]
-        public string Currency { get; set; }
-    }
+[TableName("Countries")]
+public sealed class Country
+{
+    [IdColumn]
+    public int CountryId { get; set; }
+    [ColumnName("Name")]
+    public string CountryName { get; set; }
+    public string Continent { get; set; }
+    public string Currency { get; set; }
+    [IgnoreColumn]
+    public string CountryNameAndContinent
+        => String.Format("{0} - {1}", CountryName, Continent);
+}
 ```
 <hr>
 
