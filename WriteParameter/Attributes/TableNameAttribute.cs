@@ -1,6 +1,6 @@
 ﻿namespace WriteParameter.Attributes;
 
-public class TableNameAttribute : Attribute
+public class TableNameAttribute : WriteParameterClassAttribute
 {
     public readonly string TableName;
     public TableNameAttribute(string tableName)

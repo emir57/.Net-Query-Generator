@@ -1,7 +1,5 @@
-﻿namespace WriteParameter.Attributes
+﻿namespace WriteParameter.Attributes;
+
+public class IgnoreColumnAttribute : WriteParameterPropertyAttribute
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class IgnoreColumnAttribute : Attribute
-    {
-    }
 }
